@@ -5,8 +5,8 @@
     "dependencies": {},
     "node-red": {
         "settings": {
-            "flowFile": "Margens.json",
-            "credentialsFile": "Margens_cred.json"
+            "flowFile": "flows.json",
+            "credentialsFile": "flows_cred.json"
         }
     }
 }
