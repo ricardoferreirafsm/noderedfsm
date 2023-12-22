@@ -1,0 +1,12 @@
+{
+    "name": "noderedfsm",
+    "description": "Project for flows in FSM",
+    "version": "0.0.1",
+    "dependencies": {},
+    "node-red": {
+        "settings": {
+            "flowFile": "Margens.json",
+            "credentialsFile": "Margens_cred.json"
+        }
+    }
+}
