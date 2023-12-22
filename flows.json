@@ -32,6 +32,14 @@
         "env": []
     },
     {
+        "id": "4825264caacc700a",
+        "type": "tab",
+        "label": "Mapa De Amostra",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "5e1de6a648baf360",
         "type": "MSSQL-CN",
         "tdsVersion": "7_4",
@@ -1905,5 +1913,187 @@
                 "80c4fb0dcd1dc434"
             ]
         ]
+    },
+    {
+        "id": "ac3d3e5e3c9b5197",
+        "type": "inject",
+        "z": "4825264caacc700a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 120,
+        "wires": [
+            [
+                "9f27adedc5f528ba"
+            ]
+        ]
+    },
+    {
+        "id": "9f27adedc5f528ba",
+        "type": "MSSQL",
+        "z": "4825264caacc700a",
+        "mssqlCN": "46c8a938095140dd",
+        "name": "Amostras",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "Select p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand cod.CreationDateTime>=DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()) and cod.CreationDateTime<=DATEADD(day,7,DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()))\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand cod.CreationDateTime>=DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()) and cod.CreationDateTime<=DATEADD(day,7,DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()))\nOrder by Total DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 320,
+        "y": 120,
+        "wires": [
+            [
+                "97d4e9618b81af9e"
+            ]
+        ]
+    },
+    {
+        "id": "97d4e9618b81af9e",
+        "type": "function",
+        "z": "4825264caacc700a",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 120,
+        "wires": [
+            [
+                "ae63ffb79bae5e71"
+            ]
+        ]
+    },
+    {
+        "id": "ae63ffb79bae5e71",
+        "type": "function",
+        "z": "4825264caacc700a",
+        "name": "Create Template",
+        "func": "let euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nlet euroGermanNumber = new Intl.NumberFormat('de-DE', {\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 2,\n})\nvar valuesGlobal = msg.payload[0]\nvar valuesGlobalTotal=msg.payload[2]\nvar valuesWeek = msg.payload[1]\nvar valuesWeekTotal = msg.payload[3]\n\nvar html_aux = \"\"\nvar html_aux_week=\"\"\n\nvar date = new Date()\nvar dateNow = date.getDate() + \"/\" + (date.getMonth() + 1) + \"/\" + date.getFullYear();\nvar first = date.getDate() - date.getDay(); // First day is the day of the month - the day of the week\nvar last = first + 6;\nvar firstday = new Date(date.setDate(first));\nvar lastday = new Date(date.setDate(last));\nvar firstDayFormat=firstday.getDate()+\"/\"+(firstday.getMonth()+1)+firstday.getFullYear()\nvar lastDayFormat = lastday.getDate() + \"/\" + (lastday.getMonth() + 1) + lastday.getFullYear()\n\nhtml_aux = html_aux + \"<td><h4>VALOR TOTAL</h4></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGermanNumber.format(valuesGlobalTotal.length > 0 ? valuesGlobalTotal[0].Total:0) + \"</h4></td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_week = html_aux_week + \"<td><h4>VALOR TOTAL</h4></td>\"\nhtml_aux_week = html_aux_week + \"<td><h4>\" + euroGermanNumber.format(valuesWeekTotal.length > 0 ? valuesWeekTotal[0].Total : 0) + \"</h4></td>\"\nhtml_aux_week = html_aux_week + \"</tr>\"\n\nvaluesGlobal.map(i => {\n    html_aux = html_aux + \"<tr>\"\n    html_aux = html_aux + \"<td>\" + i.PartnerName + \"</td>\"\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(i.Total) + \"</td>\"\n})\n\nvaluesWeek.map(i => {\n    html_aux_week = html_aux_week + \"<tr>\"\n    html_aux_week = html_aux_week + \"<td>\" + i.PartnerName + \"</td>\"\n    html_aux_week = html_aux_week + \"<td>\" + euroGermanNumber.format(i.Total) + \"</td>\"\n})\n\nvar html = \"<!DOCTYPE html>\" +\n    \"<html>\" +\n    \"<head>\" +\n    \"<style>\" +\n    \"table {\" +\n    \"font-family: arial, sans-serif;\" +\n    \"border-collapse: collapse;\" +\n    \"width: 100%;\" +\n    \"}\" +\n\n    \"td{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: right;\" +\n    \"font-size: 10px;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"th{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: left;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"tr:nth-child(even) {\" +\n    \"background-color: #dddddd;\" +\n    \"}\" +\n    \"</style>\" +\n    \"</head>\" +\n    \"<body>\" +\n    \"<h4> Bom Dia.</h4>\" +\n    \"<div></div>\" +\n    \"<h4> MAPA DE AMOSTRAS SEMANAL DE \"+firstDayFormat+\" A \"+lastDayFormat+\"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Quantidade Total</th>\" +\n    \"</tr>\"\nhtml = html + html_aux_week\nhtml=html+\"</table><br></br>\"\nhtml = html + \"<h4> MAPA DE AMOSTRAS ANUAL DE \" +date.getFullYear()+ \"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\"\nhtml = html+\"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Quantidade Total</th>\" +\n    \"</tr>\"\nhtml=html+html_aux;\nhtml = html + \"</table><br></br> </body> </html>\"\n\nmsg.payload = html\nmsg.plaintext = 'text:html'\nmsg.topic = 'MAPA DE AMOSTRAS SEMANAL DE '+firstDayFormat+' A '+lastDayFormat+'.';\nmsg.from = 'ricardo.ferreira@fsm.pt'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 120,
+        "wires": [
+            [
+                "e101cdd59d92eb6e",
+                "61b39e400834c077",
+                "3378a93fb48a814c",
+                "036da7ecc0e30d66"
+            ]
+        ]
+    },
+    {
+        "id": "8bc7156fb07f1e93",
+        "type": "inject",
+        "z": "4825264caacc700a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 09 * * 6",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 180,
+        "wires": [
+            [
+                "9f27adedc5f528ba"
+            ]
+        ]
+    },
+    {
+        "id": "e101cdd59d92eb6e",
+        "type": "e-mail",
+        "z": "4825264caacc700a",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "ricardo.ferreira@fsm.pt",
+        "dname": "",
+        "x": 1000,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "61b39e400834c077",
+        "type": "e-mail",
+        "z": "4825264caacc700a",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "jose.lima@fsm.pt",
+        "dname": "",
+        "x": 990,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "3378a93fb48a814c",
+        "type": "e-mail",
+        "z": "4825264caacc700a",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "nuno.franca@fsm.pt",
+        "dname": "",
+        "x": 1000,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "036da7ecc0e30d66",
+        "type": "e-mail",
+        "z": "4825264caacc700a",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "daniela.alves@fsm.pt",
+        "dname": "",
+        "x": 1000,
+        "y": 300,
+        "wires": []
     }
 ]
