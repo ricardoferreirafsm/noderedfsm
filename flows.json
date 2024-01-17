@@ -40,6 +40,14 @@
         "env": []
     },
     {
+        "id": "d8b91f5aab19e75d",
+        "type": "tab",
+        "label": "Encomendas FSM",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "5e1de6a648baf360",
         "type": "MSSQL-CN",
         "tdsVersion": "7_4",
@@ -259,7 +267,12 @@
                 "8834981e555a91de",
                 "2054172cb7b62b9f",
                 "e8e8a81b192076a4",
-                "587b74779348dc21"
+                "587b74779348dc21",
+                "1e3f5025464d05ab",
+                "2e1cced76e13c507",
+                "7e2a3a40691caf59",
+                "953401b41b82d04e",
+                "6ab4b1b99a940b41"
             ]
         ]
     },
@@ -304,6 +317,76 @@
         "dname": "",
         "x": 1030,
         "y": 340,
+        "wires": []
+    },
+    {
+        "id": "1e3f5025464d05ab",
+        "type": "e-mail",
+        "z": "7c71e4ade78eb0e9",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "filipe.guimaraes@fsm.pt",
+        "dname": "",
+        "x": 1050,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "2e1cced76e13c507",
+        "type": "e-mail",
+        "z": "7c71e4ade78eb0e9",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "samuel.correia@fsm.pt",
+        "dname": "",
+        "x": 1040,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "7e2a3a40691caf59",
+        "type": "e-mail",
+        "z": "7c71e4ade78eb0e9",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "joao.vieira@fsm.pt",
+        "dname": "",
+        "x": 1030,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "953401b41b82d04e",
+        "type": "e-mail",
+        "z": "7c71e4ade78eb0e9",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "celia.bessa@fsm.pt",
+        "dname": "",
+        "x": 1030,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "6ab4b1b99a940b41",
+        "type": "e-mail",
+        "z": "7c71e4ade78eb0e9",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "sandra.soares@fsm.pt",
+        "dname": "",
+        "x": 1040,
+        "y": 640,
         "wires": []
     },
     {
@@ -2088,5 +2171,228 @@
         "x": 1000,
         "y": 300,
         "wires": []
+    },
+    {
+        "id": "cd455094cd57f5dc",
+        "type": "inject",
+        "z": "d8b91f5aab19e75d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "6e1d9350add378a2"
+            ]
+        ]
+    },
+    {
+        "id": "6e1d9350add378a2",
+        "type": "MSSQL",
+        "z": "d8b91f5aab19e75d",
+        "mssqlCN": "5e1de6a648baf360",
+        "name": "",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "\nSelect Sum(TotEnc) TotEncT, Sum(MonthCor) MonthCorT,Sum(MonthPro) MonthProT\nfrom EncomendasTotaisPorCliOPONS3\n\nSelect PartnerName,Sum(TotEnc) TotEncT, Sum(MonthCor) MonthCorT,Sum(MonthPro) MonthProT\nfrom EncomendasTotaisPorCliOPONS3\nWhere TypeData='Value' and PartnerID NOT IN ('3322', '10486')\nGroup by PartnerName, PartnerID\nOrder by TotEncT DESC\n\n\nSelect PartnerName,Sum(TotEnc) TotEncT, Sum(MonthCor) MonthCorT,Sum(MonthPro) MonthProT\nfrom EncomendasTotaisPorCliGenCatOPONS3\nWhere TypeData='Value' and PartnerID NOT IN ('3322', '10486')\nGroup by PartnerName, PartnerID\nOrder by TotEncT DESC\n\nSelect Sum(TotEnc) TotEncT, Sum(MonthCor) MonthCorT,Sum(MonthPro) MonthProT\nfrom EncomendasTotaisPorCliOPONS3NOTENC\n\nSelect PartnerName,Sum(TotEnc) TotEncT, Sum(MonthCor) MonthCorT,Sum(MonthPro) MonthProT\nfrom EncomendasTotaisPorCliOPONS3NOTENC\nWhere TypeData='Value' and PartnerID NOT IN ('3322', '10486')\nGroup by PartnerName, PartnerID\nOrder by TotEncT DESC\n\n\nSelect PartnerName,Sum(TotEnc) TotEncT, Sum(MonthCor) MonthCorT,Sum(MonthPro) MonthProT\nfrom EncomendasTotaisPorCliGenCatOPONS3NOTENC\nWhere TypeData='Value' and PartnerID NOT IN ('3322', '10486')\nGroup by PartnerName, PartnerID\nOrder by TotEncT DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 340,
+        "y": 120,
+        "wires": [
+            [
+                "91c689b3fe28036f"
+            ]
+        ]
+    },
+    {
+        "id": "3e9656a0814abbac",
+        "type": "e-mail",
+        "z": "d8b91f5aab19e75d",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "ricardo.ferreira@fsm.pt",
+        "dname": "",
+        "x": 1060,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "d077a08243db98c6",
+        "type": "function",
+        "z": "d8b91f5aab19e75d",
+        "name": "Create Template",
+        "func": "let euroGerman = Intl.NumberFormat(\"de-DE\", {\n    minimumFractionDigits: 0,\n});\nvar values=msg.payload[1]\nvar valuesTotal=msg.payload[0][0]\nvar valuesNOTENC = msg.payload[4]\nvar valuesTotalNOTENC = msg.payload[3][0]\nvar html_aux = \"\"\nvar html_aux_1=\"\"\nhtml_aux = html_aux + \"<tr>\"\nhtml_aux = html_aux + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux = html_aux + \"<td>€\" + euroGerman.format(valuesTotal.TotEncT.toFixed(0)) + \"</td>\"\nhtml_aux = html_aux + \"<td>€\" + euroGerman.format(valuesTotal.MonthCorT.toFixed(0)) + \"</td>\"\nhtml_aux = html_aux + \"<td>€\" + euroGerman.format(valuesTotal.MonthProT.toFixed(0)) + \"</td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_1 = html_aux_1 + \"<tr>\"\nhtml_aux_1 = html_aux_1 + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(valuesTotalNOTENC.TotEncT.toFixed(0)) + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(valuesTotalNOTENC.MonthCorT.toFixed(0)) + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(valuesTotalNOTENC.MonthProT.toFixed(0)) + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"</tr>\"\n\nvalues.map(i=>{\n    html_aux=html_aux+\"<tr>\"\n    html_aux=html_aux+\"<td>\"+i.PartnerName+\"</td>\"\n    html_aux=html_aux+\"<td>€\"+euroGerman.format(i.TotEncT.toFixed(0))+\"</td>\"\n    html_aux=html_aux+\"<td>€\"+euroGerman.format(i.MonthCorT.toFixed(0))+\"</td>\"\n    html_aux=html_aux+\"<td>€\"+euroGerman.format(i.MonthProT.toFixed(0))+\"</td>\"\n    html_aux=html_aux+\"</tr>\"\n})\n\nvaluesNOTENC.map(i => {\n  html_aux_1 = html_aux_1 + \"<tr>\"\n  html_aux_1 = html_aux_1 + \"<td>\" + i.PartnerName + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(i.TotEncT.toFixed(0)) + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(i.MonthCorT.toFixed(0)) + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(i.MonthProT.toFixed(0)) + \"</td>\"\n  html_aux_1 = html_aux_1 + \"</tr>\"\n})\nvar html =\"<!DOCTYPE html>\"+\n\"<html>\"+\n\"<head>\"+\n\"<style>\"+\n\"table {\"+\n  \"font-family: arial, sans-serif;\"+\n  \"border-collapse: collapse;\"+\n  \"width: 100%;\"+\n\"}\"+\n\n\"td{\"+\n  \"border: 1px solid #dddddd;\"+\n  \"text-align: right;\"+\n  \"padding: 8px;\"+\n\"}\"+\n\"th{\"+\n \"border: 1px solid #dddddd;\"+\n  \"text-align: left;\"+\n  \"padding: 8px;\"+\n\"}\"+\n\"tr:nth-child(even) {\"+\n  \"background-color: #dddddd;\"+\n\"}\"+\n\"</style>\"+\n\"</head>\"+\n\"<body>\"+\n\"<h4> Boa Noite.</h4>\"+\n\"<div></div>\"+\n\"<h4> Segue abaixo as Encomendas em Carteira por Cliente</h4><br>\"+\n\"<h4>Encomendas ainda sem confirmação</h4>\"+\n\"<div></div>\"+\n\"<div></div>\"+\n\"<table>\"+\n\"<tr>\"+\n    \"<th>Cliente</th>\"+\n    \"<th>Total em Carteira</th>\"+\n    \"<th>Total Mês Corrente</th>\"+\n    \"<th>Total Próximo Mês</th>\"+\n\"</tr>\"\nhtml=html+html_aux\nhtml = html +\"</table><br> <h4>Encomendas confirmadas</h4>\"\nhtml = html + \"<table>\" +\n  \"<tr>\" +\n  \"<th>Cliente</th>\" +\n  \"<th>Total em Carteira</th>\" +\n  \"<th>Total Mês Corrente</th>\" +\n  \"<th>Total Próximo Mês</th>\" +\n  \"</tr>\"\nhtml=html+html_aux_1\nhtml=html+\"</table></body> </html>\"\n\nmsg.payload=html\nmsg.plaintext='text:html'\nmsg.topic='Encomendas em Carteira FSM'\nmsg.from='ricardo.ferreira@fsm.pt'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 120,
+        "wires": [
+            [
+                "3e9656a0814abbac",
+                "2c88ec9a3a6eede2",
+                "6327a5cf3b3b6970"
+            ]
+        ]
+    },
+    {
+        "id": "b0bf67d64e3c89b8",
+        "type": "e-mail",
+        "z": "d8b91f5aab19e75d",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "patricia.diz@fsm.pt",
+        "dname": "",
+        "x": 1050,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "2c88ec9a3a6eede2",
+        "type": "e-mail",
+        "z": "d8b91f5aab19e75d",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "nuno.franca@fsm.pt",
+        "dname": "",
+        "x": 1060,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "6327a5cf3b3b6970",
+        "type": "e-mail",
+        "z": "d8b91f5aab19e75d",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "fsm.daf@fsm.pt",
+        "dname": "",
+        "x": 1040,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "c264d34080bb3b11",
+        "type": "e-mail",
+        "z": "d8b91f5aab19e75d",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "jmachado@fsm.pt",
+        "dname": "",
+        "x": 1050,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "eaeeaa09b1b15f01",
+        "type": "e-mail",
+        "z": "d8b91f5aab19e75d",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "antonio.ferreira@fsm.pt",
+        "dname": "",
+        "x": 1070,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "79991a3a56935ef4",
+        "type": "e-mail",
+        "z": "d8b91f5aab19e75d",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "fernando.machado@fsm.pt",
+        "dname": "",
+        "x": 1080,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "91c689b3fe28036f",
+        "type": "function",
+        "z": "d8b91f5aab19e75d",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 120,
+        "wires": [
+            [
+                "d077a08243db98c6"
+            ]
+        ]
+    },
+    {
+        "id": "e37c0dc5ead15b7a",
+        "type": "inject",
+        "z": "d8b91f5aab19e75d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "30 19 * * 1,2,3,4,5,6",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 180,
+        "wires": [
+            [
+                "6e1d9350add378a2"
+            ]
+        ]
     }
 ]
