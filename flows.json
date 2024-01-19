@@ -2247,7 +2247,7 @@
         "type": "function",
         "z": "d8b91f5aab19e75d",
         "name": "Create Template",
-        "func": "let euroGerman = Intl.NumberFormat(\"de-DE\", {\n    minimumFractionDigits: 0,\n});\nvar values=msg.payload[1]\nvar valuesTotal=msg.payload[0][0]\nvar valuesNOTENC = msg.payload[4]\nvar valuesTotalNOTENC = msg.payload[3][0]\nvar html_aux = \"\"\nvar html_aux_1=\"\"\nhtml_aux = html_aux + \"<tr>\"\nhtml_aux = html_aux + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux = html_aux + \"<td>€\" + euroGerman.format(valuesTotal.TotEncT.toFixed(0)) + \"</td>\"\nhtml_aux = html_aux + \"<td>€\" + euroGerman.format(valuesTotal.MonthCorT.toFixed(0)) + \"</td>\"\nhtml_aux = html_aux + \"<td>€\" + euroGerman.format(valuesTotal.MonthProT.toFixed(0)) + \"</td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_1 = html_aux_1 + \"<tr>\"\nhtml_aux_1 = html_aux_1 + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(valuesTotalNOTENC.TotEncT.toFixed(0)) + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(valuesTotalNOTENC.MonthCorT.toFixed(0)) + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(valuesTotalNOTENC.MonthProT.toFixed(0)) + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"</tr>\"\n\nvalues.map(i=>{\n    html_aux=html_aux+\"<tr>\"\n    html_aux=html_aux+\"<td>\"+i.PartnerName+\"</td>\"\n    html_aux=html_aux+\"<td>€\"+euroGerman.format(i.TotEncT.toFixed(0))+\"</td>\"\n    html_aux=html_aux+\"<td>€\"+euroGerman.format(i.MonthCorT.toFixed(0))+\"</td>\"\n    html_aux=html_aux+\"<td>€\"+euroGerman.format(i.MonthProT.toFixed(0))+\"</td>\"\n    html_aux=html_aux+\"</tr>\"\n})\n\nvaluesNOTENC.map(i => {\n  html_aux_1 = html_aux_1 + \"<tr>\"\n  html_aux_1 = html_aux_1 + \"<td>\" + i.PartnerName + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(i.TotEncT.toFixed(0)) + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(i.MonthCorT.toFixed(0)) + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(i.MonthProT.toFixed(0)) + \"</td>\"\n  html_aux_1 = html_aux_1 + \"</tr>\"\n})\nvar html =\"<!DOCTYPE html>\"+\n\"<html>\"+\n\"<head>\"+\n\"<style>\"+\n\"table {\"+\n  \"font-family: arial, sans-serif;\"+\n  \"border-collapse: collapse;\"+\n  \"width: 100%;\"+\n\"}\"+\n\n\"td{\"+\n  \"border: 1px solid #dddddd;\"+\n  \"text-align: right;\"+\n  \"padding: 8px;\"+\n\"}\"+\n\"th{\"+\n \"border: 1px solid #dddddd;\"+\n  \"text-align: left;\"+\n  \"padding: 8px;\"+\n\"}\"+\n\"tr:nth-child(even) {\"+\n  \"background-color: #dddddd;\"+\n\"}\"+\n\"</style>\"+\n\"</head>\"+\n\"<body>\"+\n\"<h4> Boa Noite.</h4>\"+\n\"<div></div>\"+\n\"<h4> Segue abaixo as Encomendas em Carteira por Cliente</h4><br>\"+\n\"<h4>Encomendas ainda sem confirmação</h4>\"+\n\"<div></div>\"+\n\"<div></div>\"+\n\"<table>\"+\n\"<tr>\"+\n    \"<th>Cliente</th>\"+\n    \"<th>Total em Carteira</th>\"+\n    \"<th>Total Mês Corrente</th>\"+\n    \"<th>Total Próximo Mês</th>\"+\n\"</tr>\"\nhtml=html+html_aux\nhtml = html +\"</table><br> <h4>Encomendas confirmadas</h4>\"\nhtml = html + \"<table>\" +\n  \"<tr>\" +\n  \"<th>Cliente</th>\" +\n  \"<th>Total em Carteira</th>\" +\n  \"<th>Total Mês Corrente</th>\" +\n  \"<th>Total Próximo Mês</th>\" +\n  \"</tr>\"\nhtml=html+html_aux_1\nhtml=html+\"</table></body> </html>\"\n\nmsg.payload=html\nmsg.plaintext='text:html'\nmsg.topic='Encomendas em Carteira FSM'\nmsg.from='ricardo.ferreira@fsm.pt'\nreturn msg;",
+        "func": "let euroGerman = Intl.NumberFormat(\"de-DE\", {\n    minimumFractionDigits: 0,\n});\nvar values=msg.payload[1]\nvar valuesTotal=msg.payload[0][0]\nvar valuesNOTENC = msg.payload[4]\nvar valuesTotalNOTENC = msg.payload[3][0]\nvar html_aux = \"\"\nvar html_aux_1=\"\"\nhtml_aux = html_aux + \"<tr>\"\nhtml_aux = html_aux + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux = html_aux + \"<td>€\" + euroGerman.format(valuesTotal.TotEncT.toFixed(0)) + \"</td>\"\nhtml_aux = html_aux + \"<td>€\" + euroGerman.format(valuesTotal.MonthCorT.toFixed(0)) + \"</td>\"\nhtml_aux = html_aux + \"<td>€\" + euroGerman.format(valuesTotal.MonthProT.toFixed(0)) + \"</td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_1 = html_aux_1 + \"<tr>\"\nhtml_aux_1 = html_aux_1 + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(valuesTotalNOTENC.TotEncT.toFixed(0)) + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(valuesTotalNOTENC.MonthCorT.toFixed(0)) + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(valuesTotalNOTENC.MonthProT.toFixed(0)) + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"</tr>\"\n\nvalues.map(i=>{\n    html_aux=html_aux+\"<tr>\"\n    html_aux=html_aux+\"<td>\"+i.PartnerName+\"</td>\"\n    html_aux=html_aux+\"<td>€\"+euroGerman.format(i.TotEncT.toFixed(0))+\"</td>\"\n    html_aux=html_aux+\"<td>€\"+euroGerman.format(i.MonthCorT.toFixed(0))+\"</td>\"\n    html_aux=html_aux+\"<td>€\"+euroGerman.format(i.MonthProT.toFixed(0))+\"</td>\"\n    html_aux=html_aux+\"</tr>\"\n})\n\nvaluesNOTENC.map(i => {\n  html_aux_1 = html_aux_1 + \"<tr>\"\n  html_aux_1 = html_aux_1 + \"<td>\" + i.PartnerName + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(i.TotEncT.toFixed(0)) + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(i.MonthCorT.toFixed(0)) + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>€\" + euroGerman.format(i.MonthProT.toFixed(0)) + \"</td>\"\n  html_aux_1 = html_aux_1 + \"</tr>\"\n})\nvar html =\"<!DOCTYPE html>\"+\n\"<html>\"+\n\"<head>\"+\n\"<style>\"+\n\"table {\"+\n  \"font-family: arial, sans-serif;\"+\n  \"border-collapse: collapse;\"+\n  \"width: 100%;\"+\n\"}\"+\n\n\"td{\"+\n  \"border: 1px solid #dddddd;\"+\n  \"text-align: right;\"+\n  \"padding: 8px;\"+\n\"}\"+\n\"th{\"+\n \"border: 1px solid #dddddd;\"+\n  \"text-align: left;\"+\n  \"padding: 8px;\"+\n\"}\"+\n\"tr:nth-child(even) {\"+\n  \"background-color: #dddddd;\"+\n\"}\"+\n\"</style>\"+\n\"</head>\"+\n\"<body>\"+\n\"<h4> Boa Noite.</h4>\"+\n\"<div></div>\"+\n\"<h4> Segue abaixo as Encomendas em Carteira por Cliente</h4><br>\"+\n\"<br><h4>ENCOMENDAS CONFIRMADAS</h4>\"+\n\"<div></div>\"+\n\"<div></div>\"+\n\"<table>\"+\n\"<tr>\"+\n    \"<th>Cliente</th>\"+\n    \"<th>Total em Carteira</th>\"+\n    \"<th>Total Mês Corrente</th>\"+\n    \"<th>Total Próximo Mês</th>\"+\n\"</tr>\"\nhtml=html+html_aux\nhtml = html +\"</table><br> <h4>ENCOMENDAS SEM CONFIRMAÇÃO</h4>\"\nhtml = html + \"<table>\" +\n  \"<tr>\" +\n  \"<th>Cliente</th>\" +\n  \"<th>Total em Carteira</th>\" +\n  \"<th>Total Mês Corrente</th>\" +\n  \"<th>Total Próximo Mês</th>\" +\n  \"</tr>\"\nhtml=html+html_aux_1\nhtml=html+\"</table></body> </html>\"\n\nmsg.payload=html\nmsg.plaintext='text:html'\nmsg.topic='Encomendas em Carteira FSM'\nmsg.from='ricardo.ferreira@fsm.pt'\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2259,7 +2259,9 @@
             [
                 "3e9656a0814abbac",
                 "2c88ec9a3a6eede2",
-                "6327a5cf3b3b6970"
+                "6327a5cf3b3b6970",
+                "c264d34080bb3b11",
+                "be6dcac785240779"
             ]
         ]
     },
@@ -2317,20 +2319,6 @@
         "dname": "",
         "x": 1050,
         "y": 240,
-        "wires": []
-    },
-    {
-        "id": "eaeeaa09b1b15f01",
-        "type": "e-mail",
-        "z": "d8b91f5aab19e75d",
-        "server": "mail.sooma.com",
-        "port": "465",
-        "secure": true,
-        "tls": true,
-        "name": "antonio.ferreira@fsm.pt",
-        "dname": "",
-        "x": 1070,
-        "y": 280,
         "wires": []
     },
     {
@@ -2394,5 +2382,19 @@
                 "6e1d9350add378a2"
             ]
         ]
+    },
+    {
+        "id": "be6dcac785240779",
+        "type": "e-mail",
+        "z": "d8b91f5aab19e75d",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "jose.lima@fsm.pt",
+        "dname": "",
+        "x": 1050,
+        "y": 280,
+        "wires": []
     }
 ]
