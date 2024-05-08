@@ -76,8 +76,8 @@
         "trustServerCertificate": true,
         "database": "OnS3_FSM",
         "useUTC": true,
-        "connectTimeout": "15000",
-        "requestTimeout": "15000",
+        "connectTimeout": "30000",
+        "requestTimeout": "30000",
         "cancelTimeout": "5000",
         "pool": "5",
         "parseJSON": false,
@@ -95,6 +95,24 @@
         "database": "OnS3_Dash",
         "useUTC": true,
         "connectTimeout": "15000",
+        "requestTimeout": "15000",
+        "cancelTimeout": "5000",
+        "pool": "5",
+        "parseJSON": false,
+        "enableArithAbort": true
+    },
+    {
+        "id": "66fca4e0d43a824e",
+        "type": "MSSQL-CN",
+        "tdsVersion": "7_4",
+        "name": "FSM-ONs3 Novo",
+        "server": "90.0.20.30",
+        "port": "1433",
+        "encyption": false,
+        "trustServerCertificate": true,
+        "database": "OnS3_FSM",
+        "useUTC": true,
+        "connectTimeout": "30000",
         "requestTimeout": "15000",
         "cancelTimeout": "5000",
         "pool": "5",
@@ -134,12 +152,12 @@
         "id": "7b16c98fe81faaef",
         "type": "MSSQL",
         "z": "7c71e4ade78eb0e9",
-        "mssqlCN": "46c8a938095140dd",
-        "name": "",
+        "mssqlCN": "66fca4e0d43a824e",
+        "name": "Nova Query",
         "outField": "payload",
         "returnType": 0,
         "throwErrors": 1,
-        "query": "Select codRececao.DocType, codRececao.OrderID, codRececao.OrderRow, codo.DocTypeOri,codo.OrderIDOri OCOri,codCompras.mrpOrigem MRPOri,codCompras.OPOri,productions.PartnerName, productions.ItemID, codCompras.PartnerName Fornecedor, \ncodRececao.ItemID CodArtigo,codCompras.ItemDesc DescArtigo, codRececao.QtySatisf QtdRecebida, codCompras.QtyOrd QtdPedida,codCompras.QtySatisf,opComp.TotQty QtdOP, \nCAST(IIF(codCompras.QtyOrd>0,((codCompras.QtySatisf*100)/codCompras.QtyOrd),0)-100 as decimal(18,2)) percExcesso,\ncodRececao.CreationDateTime DataRececao, codCompras.DataCompra, FORMAT(codRececao.UnitPrice, 'C3', 'de-DE') PrecoRececao, FORMAT(codCompras.UnitPrice, 'C3', 'de-DE') PrecoCompras,FORMAT(codCompras.TotValue, 'C3', 'de-DE') TotValue,\nFORMAT(IIF(codCompras.UnitPrice>0,(codCompras.QtySatisf-codCompras.QtyOrd)*codCompras.UnitPrice,0), 'C3', 'de-DE') TotValueExcesso\nfrom ClientOrderDetails codRececao join ClientOrderDetailsOri codo on codRececao.OrderID=codo.OrderID and codRececao.OrderRow=codo.OrderRow and codo.DocType='RC'\njoin (SELECT cod.DocType, cod.OrderID, cod.OrderRow, co.ClientID, bp.PartnerName, co.RequesterID,mrp.OrderIDOri mrpOrigem,op.DocTypeOri,op.OrderIDOri OPOri, cod.ItemID, im.ItemDesc, \n\t            cod.QtyOrd, cod.QtySatisf, cod.Unit, cod.UnitPrice, (cod.UnitPrice * cod.QtyOrd * (1+(cod.PerCstAdic /100) )) TotValue, cod.PerCstAdic, co.Currency, cod.StartConfectionDate, cod.EndConfectionDate, cod.EndConfectionDateReal, \n\t            cod.ProductionStatus, cod.WHID, cod.CreationDateTime DataCompra\n            FROM ClientOrderDetails cod (NOLOCK)\n            JOIN DocumentStatus ds (NOLOCK) on ds.DocType = cod.doctype and ds.DocStatusID = cod.ProductionStatus   AND ds.IsAnulated = 0 \n            JOIN ItemMaster im (NOLOCK) on im.ItemID = cod.ItemID\n            JOIN ClientOrders co (NOLOCK) on co.DocType = cod.DocType and co.OrderID = cod.OrderID\n            JOIN (Select DISTINCT OrderID,OrderRow, DocTypeOri, OrderIDOri from ClientOrderDetailsOri Where DocType='OC' and DocTypeOri='MRP') mrp on mrp.OrderID=co.OrderID and mrp.OrderRow=cod.OrderRow\n            JOIN (Select DISTINCT OrderID,OrderRow, DocTypeOri, OrderIDOri from ClientOrderDetailsOri Where DocType='OC' and DocTypeOri in ('OP','OPC')) op on op.OrderID=co.OrderID and op.OrderRow=cod.OrderRow\n            JOIN BusinessPartners bp (NOLOCK) on bp.PartnerID = co.ClientID and bp.PartnerType='F'\n            WHERE co.DocType = 'OC' ) codCompras on codCompras.DocType=codo.DocTypeOri and codCompras.OrderID=codo.OrderIDOri and codCompras.OrderRow=codo.OrderRowOri and codCompras.ItemID=codRececao.ItemID\nand codRececao.ItemId=codCompras.ItemID\njoin (Select DISTINCT cod.DocType,cod.OrderID, cod.ItemID, cod.ItemDesc1, p.PartnerName\nfrom ClientOrderDetails cod\njoin ClientOrders co on co.OrderID=cod.OrderID and co.DocType=cod.DocType\nJOIN BusinessPartners p on co.ClientID=p.PartnerID and p.PartnerType='C'\nWhere cod.DocType in ('OP', 'OPC')) productions on productions.OrderID=codCompras.OPOri and productions.DocType=codCompras.DocTypeOri\njoin (Select DocType, OrderID, ComponentID, SUM(UnitQty) UnitQty, SUM(TotQty) TotQty, AVG(UnitPrice) UnitPrice\nfrom ClientOrderComp\nWhere DocType in ('OP', 'OPC')\nGroup by DocType, OrderID, ComponentID) opComp on opComp.DocType=productions.DocType and opComp.OrderID=productions.OrderID and codRececao.ItemID=opComp.ComponentID\nWhere codRececao.DocType='RC' and codRececao.CreationDateTime>DATEADD(Day, -1, convert(date,FORMAT(GETDATE(),'yyyy-MM-dd'))) and IIF(codCompras.QtyOrd>0,((codCompras.QtySatisf*100)/codCompras.QtyOrd),0)>103\nOrder by productions.ItemID ",
+        "query": "Select rececoes.DocTypeRececao DocType, rececoes.NrRececao OrderID, rececoes.DocTypeCompraRececao DocTypeOri,rececoes.NrCompraRececao OCOri,compras.nrMRPCompra MRPOri,ops.PartnerName,ops.ItemID, compras.Fornecedor, \nrececoes.ItemRececao CodArtigo, rececoes.QtdRececao QtdRecebida, compras.QtdComprada QtdPedida,compras.QtySatisf, \nCAST(IIF(compras.QtdComprada>0,((compras.QtySatisf*100)/compras.QtdComprada),0)-100 as decimal(18,2)) percExcesso,\nrececoes.DataRececao, compras.DataCompra, FORMAT(rececoes.PrecoRececao, 'C3', 'de-DE') PrecoRececao, FORMAT(compras.PrecoCompra, 'C3', 'de-DE') PrecoCompras,FORMAT(compras.TotalCompra, 'C3', 'de-DE') TotValue,\nFORMAT(IIF(compras.PrecoCompra>0,(compras.QtySatisf-compras.QtdComprada)*compras.PrecoCompra,0), 'C3', 'de-DE') TotValueExcesso\nfrom (Select cod.DocType DocTypeRececao, cod.OrderID NrRececao, cod.ItemID ItemRececao, CAST(cod.CreationDateTime as date) DataRececao,codo.DocTypeOri DocTypeCompraRececao,codo.OrderIDOri NrCompraRececao, \nAVG(UnitPrice) PrecoRececao,SUM(TotValue) TotalRececao, SUM(cod.QtySatisf) QtdRececao \nfrom ClientOrderDetails cod\njoin ClientOrderDetailsOri codo on cod.DocType=codo.DocType and cod.OrderID=codo.OrderID and cod.OrderRow=codo.OrderRow\nWhere cod.DocType='RC'\nGroup by cod.DocType, cod.OrderID, cod.ItemID, CAST(cod.CreationDateTime as date),codo.DocTypeOri,codo.OrderIDOri) rececoes\n\njoin\n(Select cod.DocType DocTypeCompra, cod.OrderID NrCompra, cod.ItemID ItemCompra, CAST(cod.CreationDateTime as date) DataCompra,codo.DocTypeOri DocTypeMRPCompra,codo.OrderIDOri nrMRPCompra,PartnerName Fornecedor,\nAVG(UnitPrice) PrecoCompra,SUM(cod.QtyOrd)*AVG(UnitPrice) TotalCompra, SUM(cod.QtyOrd) QtdComprada, SUM(cod.QtySatisf) QtySatisf\nfrom ClientOrderDetails cod\njoin (Select Distinct DocType, OrderID, DocTypeOri, OrderIDOri from ClientOrderDetailsOri where DocTypeOri='MRP') codo on cod.DocType=codo.DocType and cod.OrderID=codo.OrderID\njoin (Select Distinct DocType, OrderID, ClientID, p.PartnerName from ClientOrders co \n        join (Select PartnerID, PartnerName From BusinessPartners Where PartnerType='F') p on p.PartnerID=co.ClientID Where DocType='OC') client \non client.DocType=cod.DocType and client.OrderID=codo.OrderID\nWhere cod.DocType='OC'\nGroup by cod.DocType, cod.OrderID, cod.ItemID, CAST(cod.CreationDateTime as date),codo.DocTypeOri,codo.OrderIDOri, PartnerName) compras\non compras.DocTypeCompra=rececoes.DocTypeCompraRececao and compras.NrCompra=rececoes.NrCompraRececao and compras.ItemCompra=rececoes.ItemRececao\n\njoin\n(Select DISTINCT opOri.DocType, opOri.OrderID, clients.ClientID, clients.PartnerName, itens.ItemID, oc.ItemID Componente\nfrom (Select DISTINCT DocType, OrderID,OrderRow, DocTypeOri, OrderIDOri from ClientOrderDetailsOri Where DocType='OC' and DocTypeOri in ('OP', 'OPC')) opOri\njoin (Select DocType, OrderID,OrderRow,  ItemID from ClientOrderDetails Where DocType='OC') oc\non oc.DocType=opOri.DocType and oc.OrderID=opOri.OrderID and oc.OrderRow=opOri.OrderRow\njoin (Select DISTINCT DocType, OrderID, ClientID, bp.PartnerName \n        from ClientOrders co\n        join BusinessPartners bp on bp.PartnerID=co.ClientID and PartnerType='C' and DocType in ('OP', 'OPC')) clients on clients.DocType=opOri.DocTypeOri and clients.OrderID=opOri.OrderIDOri\njoin (Select DISTINCT DocType, OrderID, ItemID from ClientOrderDetails Where DocType in ('OP', 'OPC')) itens on itens.DocType=opOri.DocTypeOri and itens.OrderID=opOri.OrderIDOri) ops\non ops.DocType=rececoes.DocTypeCompraRececao and ops.OrderID=rececoes.NrCompraRececao and ops.Componente=rececoes.ItemRececao\n\nWhere rececoes.DataRececao>=DATEADD(Day, -1, convert(date,CAST(GETDATE() as date))) and IIF(compras.QtdComprada>0,((compras.QtySatisf*100)/compras.QtdComprada),0)>103",
         "modeOpt": "queryMode",
         "modeOptType": "query",
         "queryOpt": "payload",
@@ -149,8 +167,8 @@
         "rows": "rows",
         "rowsType": "msg",
         "params": [],
-        "x": 380,
-        "y": 100,
+        "x": 370,
+        "y": 40,
         "wires": [
             [
                 "1e0efe22d4190522"
@@ -186,7 +204,7 @@
         "tls": true,
         "name": "ricardo.ferreira@fsm.pt",
         "dname": "",
-        "x": 1040,
+        "x": 1280,
         "y": 100,
         "wires": []
     },
@@ -216,7 +234,7 @@
         "tls": true,
         "name": "nuno.franca@fsm.pt",
         "dname": "",
-        "x": 1040,
+        "x": 1280,
         "y": 160,
         "wires": []
     },
@@ -230,7 +248,7 @@
         "tls": true,
         "name": "patricia.diz@fsm.pt",
         "dname": "",
-        "x": 1030,
+        "x": 1270,
         "y": 220,
         "wires": []
     },
@@ -244,7 +262,7 @@
         "tls": true,
         "name": "fsm.daf@fsm.pt",
         "dname": "",
-        "x": 1020,
+        "x": 1260,
         "y": 280,
         "wires": []
     },
@@ -253,24 +271,25 @@
         "type": "function",
         "z": "7c71e4ade78eb0e9",
         "name": "Create Template Email",
-        "func": "let euroGerman = Intl.NumberFormat(\"de-DE\", {\n    minimumFractionDigits: 0,\n});\nvar values = msg.payload\nvar html_aux = \"\"\nvar date = new Date()\nvar dateNow = (date.getDate()-1) + \"/\" + (date.getMonth() + 1) + \"/\" + date.getFullYear()\nvalues.map(i => {\n    html_aux = html_aux + \"<tr>\"\n    html_aux = html_aux + \"<td>\" + i.PartnerName + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.ItemID + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.DocType + \".\" + i.OrderID + \".\" + i.OrderRow + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.DocTypeOri + \".\" + i.OCOri + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.Fornecedor + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.CodArtigo + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.DescArtigo + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.QtdPedida + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.QtdRecebida + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.QtySatisf + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.percExcesso + \"%</td>\"\n    html_aux = html_aux + \"<td>\" + i.TotValueExcesso + \"</td>\"\n    html_aux = html_aux + \"</tr>\"\n})\nvar html = \"<!DOCTYPE html>\" +\n    \"<html>\" +\n    \"<head>\" +\n    \"<style>\" +\n    \"table {\" +\n    \"font-family: arial, sans-serif;\" +\n    \"border-collapse: collapse;\" +\n    \"width: 100%;\" +\n    \"}\" +\n\n    \"td{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: right;\" +\n    \"font-size: 10px;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"th{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: left;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"tr:nth-child(even) {\" +\n    \"background-color: #dddddd;\" +\n    \"}\" +\n    \"</style>\" +\n    \"</head>\" +\n    \"<body>\" +\n    \"<h4> Bom Dia.</h4>\" +\n    \"<div></div>\" +\n    \"<h4> MAPA DE EXCEDENTES DE \" + dateNow + \"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Modelo</th>\" +\n    \"<th>Doc Receção</th>\" +\n    \"<th>Doc Compra</th>\" +\n    \"<th>Fornecedor</th>\" +\n    \"<th>Cod Artigo</th>\" +\n    \"<th>Desc Artigo</th>\" +\n    \"<th>Qtd Pedida</th>\" +\n    \"<th>Qtd Recebida</th>\" +\n    \"<th>Qtd Recebida Total</th>\" +\n    \"<th>% Excesso</th>\" +\n    \"<th>Valor Total Excesso €</th>\" +\n    \"</tr>\"\nhtml = html + html_aux\nhtml = html + \"</table> </body> </html>\"\n\nmsg.payload = html\nmsg.plaintext = 'text:html'\nmsg.topic = 'MAPA DE EXCEDENTES FSM DE ' + dateNow + \".\"\nmsg.from = 'ricardo.ferreira@fsm.pt'\nreturn msg;",
+        "func": "let euroGerman = Intl.NumberFormat(\"de-DE\", {\n    minimumFractionDigits: 0,\n});\nvar values = msg.payload\nvar html_aux = \"\"\nvar date = new Date()\nvar dateNow = (date.getDate()-1) + \"/\" + (date.getMonth() + 1) + \"/\" + date.getFullYear()\nvalues.map(i => {\n    html_aux = html_aux + \"<tr>\"\n    html_aux = html_aux + \"<td>\" + i.PartnerName + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.ItemID + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.DocType + \".\" + i.OrderID + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.DocTypeOri + \".\" + i.OCOri + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.Fornecedor + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.CodArtigo + \"</td>\"\n    /*html_aux = html_aux + \"<td>\" + i.DescArtigo + \"</td>\"*/\n    html_aux = html_aux + \"<td>\" + i.QtdPedida + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.QtdRecebida + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.QtySatisf + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.percExcesso + \"%</td>\"\n    html_aux = html_aux + \"<td>\" + i.TotValueExcesso + \"</td>\"\n    html_aux = html_aux + \"</tr>\"\n})\nvar html = \"<!DOCTYPE html>\" +\n    \"<html>\" +\n    \"<head>\" +\n    \"<style>\" +\n    \"table {\" +\n    \"font-family: arial, sans-serif;\" +\n    \"border-collapse: collapse;\" +\n    \"width: 100%;\" +\n    \"}\" +\n\n    \"td{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: right;\" +\n    \"font-size: 10px;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"th{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: left;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"tr:nth-child(even) {\" +\n    \"background-color: #dddddd;\" +\n    \"}\" +\n    \"</style>\" +\n    \"</head>\" +\n    \"<body>\" +\n    \"<h4> Bom Dia.</h4>\" +\n    \"<div></div>\" +\n    \"<h4> MAPA DE EXCEDENTES DE \" + dateNow + \"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Modelo</th>\" +\n    \"<th>Doc Receção</th>\" +\n    \"<th>Doc Compra</th>\" +\n    \"<th>Fornecedor</th>\" +\n    \"<th>Cod Artigo</th>\" +\n    /*\"<th>Desc Artigo</th>\" +*/\n    \"<th>Qtd Pedida</th>\" +\n    \"<th>Qtd Recebida</th>\" +\n    \"<th>Qtd Recebida Total</th>\" +\n    \"<th>% Excesso</th>\" +\n    \"<th>Valor Total Excesso €</th>\" +\n    \"</tr>\"\nhtml = html + html_aux\nhtml = html + \"</table> </body> </html>\"\n\nmsg.payload = html\nmsg.plaintext = 'text:html'\nmsg.topic = 'MAPA DE EXCEDENTES FSM DE ' + dateNow + \".\"\nmsg.from = 'ricardo.ferreira@fsm.pt'\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 800,
+        "x": 780,
         "y": 100,
         "wires": [
             [
                 "0a384673d5b1229e",
-                "8834981e555a91de",
                 "2054172cb7b62b9f",
+                "8834981e555a91de",
                 "e8e8a81b192076a4",
                 "587b74779348dc21",
                 "1e3f5025464d05ab",
                 "2e1cced76e13c507",
                 "7e2a3a40691caf59",
+                "953401b41b82d04e",
                 "6ab4b1b99a940b41",
                 "0b901a72db47cd50"
             ]
@@ -315,7 +334,7 @@
         "tls": true,
         "name": "jose.lima@fsm.pt",
         "dname": "",
-        "x": 1030,
+        "x": 1270,
         "y": 340,
         "wires": []
     },
@@ -329,7 +348,7 @@
         "tls": true,
         "name": "filipe.guimaraes@fsm.pt",
         "dname": "",
-        "x": 1050,
+        "x": 1290,
         "y": 400,
         "wires": []
     },
@@ -343,7 +362,7 @@
         "tls": true,
         "name": "samuel.correia@fsm.pt",
         "dname": "",
-        "x": 1040,
+        "x": 1280,
         "y": 460,
         "wires": []
     },
@@ -357,7 +376,7 @@
         "tls": true,
         "name": "joao.vieira@fsm.pt",
         "dname": "",
-        "x": 1030,
+        "x": 1270,
         "y": 520,
         "wires": []
     },
@@ -371,7 +390,7 @@
         "tls": true,
         "name": "celia.bessa@fsm.pt",
         "dname": "",
-        "x": 1030,
+        "x": 1270,
         "y": 580,
         "wires": []
     },
@@ -385,7 +404,7 @@
         "tls": true,
         "name": "sandra.soares@fsm.pt",
         "dname": "",
-        "x": 1040,
+        "x": 1280,
         "y": 640,
         "wires": []
     },
@@ -399,9 +418,133 @@
         "tls": true,
         "name": "jmachado@fsm.pt",
         "dname": "",
-        "x": 1030,
+        "x": 1270,
         "y": 700,
         "wires": []
+    },
+    {
+        "id": "9d937cae55084018",
+        "type": "MSSQL",
+        "z": "7c71e4ade78eb0e9",
+        "mssqlCN": "66fca4e0d43a824e",
+        "name": "Antiga Query",
+        "outField": "payload",
+        "returnType": 0,
+        "throwErrors": 1,
+        "query": "Select codRececao.DocType, codRececao.OrderID, codRececao.OrderRow, codo.DocTypeOri,codo.OrderIDOri OCOri,codCompras.mrpOrigem MRPOri,codCompras.OPOri,productions.PartnerName, productions.ItemID, codCompras.PartnerName Fornecedor, \ncodRececao.ItemID CodArtigo,codCompras.ItemDesc DescArtigo, codRececao.QtySatisf QtdRecebida, codCompras.QtyOrd QtdPedida,codCompras.QtySatisf,opComp.TotQty QtdOP, \nCAST(IIF(codCompras.QtyOrd>0,((codCompras.QtySatisf*100)/codCompras.QtyOrd),0)-100 as decimal(18,2)) percExcesso,\ncodRececao.CreationDateTime DataRececao, codCompras.DataCompra, FORMAT(codRececao.UnitPrice, 'C3', 'de-DE') PrecoRececao, FORMAT(codCompras.UnitPrice, 'C3', 'de-DE') PrecoCompras,FORMAT(codCompras.TotValue, 'C3', 'de-DE') TotValue,\nFORMAT(IIF(codCompras.UnitPrice>0,(codCompras.QtySatisf-codCompras.QtyOrd)*codCompras.UnitPrice,0), 'C3', 'de-DE') TotValueExcesso\nfrom ClientOrderDetails codRececao join ClientOrderDetailsOri codo on codRececao.OrderID=codo.OrderID and codRececao.OrderRow=codo.OrderRow and codo.DocType='RC'\njoin (SELECT cod.DocType, cod.OrderID, cod.OrderRow, co.ClientID, bp.PartnerName, co.RequesterID,mrp.OrderIDOri mrpOrigem,op.DocTypeOri,op.OrderIDOri OPOri, cod.ItemID, im.ItemDesc, \n\t            cod.QtyOrd, cod.QtySatisf, cod.Unit, cod.UnitPrice, (cod.UnitPrice * cod.QtyOrd * (1+(cod.PerCstAdic /100) )) TotValue, cod.PerCstAdic, co.Currency, cod.StartConfectionDate, cod.EndConfectionDate, cod.EndConfectionDateReal, \n\t            cod.ProductionStatus, cod.WHID, cod.CreationDateTime DataCompra\n            FROM ClientOrderDetails cod (NOLOCK)\n            JOIN DocumentStatus ds (NOLOCK) on ds.DocType = cod.doctype and ds.DocStatusID = cod.ProductionStatus   AND ds.IsAnulated = 0 \n            JOIN ItemMaster im (NOLOCK) on im.ItemID = cod.ItemID\n            JOIN ClientOrders co (NOLOCK) on co.DocType = cod.DocType and co.OrderID = cod.OrderID\n            JOIN (Select DISTINCT OrderID,OrderRow, DocTypeOri, OrderIDOri from ClientOrderDetailsOri Where DocType='OC' and DocTypeOri='MRP') mrp on mrp.OrderID=co.OrderID and mrp.OrderRow=cod.OrderRow\n            JOIN (Select DISTINCT OrderID,OrderRow, DocTypeOri, OrderIDOri from ClientOrderDetailsOri Where DocType='OC' and DocTypeOri in ('OP','OPC')) op on op.OrderID=co.OrderID and op.OrderRow=cod.OrderRow\n            JOIN BusinessPartners bp (NOLOCK) on bp.PartnerID = co.ClientID and bp.PartnerType='F'\n            WHERE co.DocType = 'OC' ) codCompras on codCompras.DocType=codo.DocTypeOri and codCompras.OrderID=codo.OrderIDOri and codCompras.OrderRow=codo.OrderRowOri and codCompras.ItemID=codRececao.ItemID\nand codRececao.ItemId=codCompras.ItemID\njoin (Select DISTINCT cod.DocType,cod.OrderID, cod.ItemID, cod.ItemDesc1, p.PartnerName\nfrom ClientOrderDetails cod\njoin ClientOrders co on co.OrderID=cod.OrderID and co.DocType=cod.DocType\nJOIN BusinessPartners p on co.ClientID=p.PartnerID and p.PartnerType='C'\nWhere cod.DocType in ('OP', 'OPC')) productions on productions.OrderID=codCompras.OPOri and productions.DocType=codCompras.DocTypeOri\njoin (Select DocType, OrderID, ComponentID, SUM(UnitQty) UnitQty, SUM(TotQty) TotQty, AVG(UnitPrice) UnitPrice\nfrom ClientOrderComp\nWhere DocType in ('OP', 'OPC')\nGroup by DocType, OrderID, ComponentID) opComp on opComp.DocType=productions.DocType and opComp.OrderID=productions.OrderID and codRececao.ItemID=opComp.ComponentID\nWhere codRececao.DocType='RC' and codRececao.CreationDateTime>=DATEADD(Day, -1, convert(date,FORMAT(GETDATE(),'yyyy-MM-dd'))) and IIF(codCompras.QtyOrd>0,((codCompras.QtySatisf*100)/codCompras.QtyOrd),0)>103\nOrder by productions.ItemID ",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 370,
+        "y": 280,
+        "wires": [
+            [
+                "5da2d9bea063e959"
+            ]
+        ]
+    },
+    {
+        "id": "5da2d9bea063e959",
+        "type": "function",
+        "z": "7c71e4ade78eb0e9",
+        "name": "function 3",
+        "func": "msg.payload = msg.payload\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 280,
+        "wires": [
+            [
+                "0caff85f0dcc48a7"
+            ]
+        ]
+    },
+    {
+        "id": "0caff85f0dcc48a7",
+        "type": "function",
+        "z": "7c71e4ade78eb0e9",
+        "name": "Create Template Email",
+        "func": "let euroGerman = Intl.NumberFormat(\"de-DE\", {\n    minimumFractionDigits: 0,\n});\nvar values = msg.payload\nvar html_aux = \"\"\nvar date = new Date()\nvar dateNow = (date.getDate()-1) + \"/\" + (date.getMonth() + 1) + \"/\" + date.getFullYear()\nvalues.map(i => {\n    html_aux = html_aux + \"<tr>\"\n    html_aux = html_aux + \"<td>\" + i.PartnerName + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.ItemID + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.DocType + \".\" + i.OrderID + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.DocTypeOri + \".\" + i.OCOri + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.Fornecedor + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.CodArtigo + \"</td>\"\n    /*html_aux = html_aux + \"<td>\" + i.DescArtigo + \"</td>\"*/\n    html_aux = html_aux + \"<td>\" + i.QtdPedida + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.QtdRecebida + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.QtySatisf + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.percExcesso + \"%</td>\"\n    html_aux = html_aux + \"<td>\" + i.TotValueExcesso + \"</td>\"\n    html_aux = html_aux + \"</tr>\"\n})\nvar html = \"<!DOCTYPE html>\" +\n    \"<html>\" +\n    \"<head>\" +\n    \"<style>\" +\n    \"table {\" +\n    \"font-family: arial, sans-serif;\" +\n    \"border-collapse: collapse;\" +\n    \"width: 100%;\" +\n    \"}\" +\n\n    \"td{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: right;\" +\n    \"font-size: 10px;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"th{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: left;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"tr:nth-child(even) {\" +\n    \"background-color: #dddddd;\" +\n    \"}\" +\n    \"</style>\" +\n    \"</head>\" +\n    \"<body>\" +\n    \"<h4> Bom Dia.</h4>\" +\n    \"<div></div>\" +\n    \"<h4> MAPA DE EXCEDENTES DE \" + dateNow + \"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Modelo</th>\" +\n    \"<th>Doc Receção</th>\" +\n    \"<th>Doc Compra</th>\" +\n    \"<th>Fornecedor</th>\" +\n    \"<th>Cod Artigo</th>\" +\n    /*\"<th>Desc Artigo</th>\" +*/\n    \"<th>Qtd Pedida</th>\" +\n    \"<th>Qtd Recebida</th>\" +\n    \"<th>Qtd Recebida Total</th>\" +\n    \"<th>% Excesso</th>\" +\n    \"<th>Valor Total Excesso €</th>\" +\n    \"</tr>\"\nhtml = html + html_aux\nhtml = html + \"</table> </body> </html>\"\n\nmsg.payload = html\nmsg.plaintext = 'text:html'\nmsg.topic = 'MAPA DE EXCEDENTES POR LINHAS FSM DE ' + dateNow + \".\"\nmsg.from = 'ricardo.ferreira@fsm.pt'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 280,
+        "wires": [
+            [
+                "0a384673d5b1229e",
+                "2054172cb7b62b9f"
+            ]
+        ]
+    },
+    {
+        "id": "713a457cb05aee0b",
+        "type": "inject",
+        "z": "7c71e4ade78eb0e9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 03 * * 2,3,4,5,6",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 280,
+        "wires": [
+            [
+                "9d937cae55084018"
+            ]
+        ]
+    },
+    {
+        "id": "1514e68b705a7f20",
+        "type": "inject",
+        "z": "7c71e4ade78eb0e9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 240,
+        "wires": [
+            [
+                "9d937cae55084018"
+            ]
+        ]
     },
     {
         "id": "7fdc6427904c36fe",
@@ -1660,9 +1803,7 @@
         "y": 120,
         "wires": [
             [
-                "0f483452c6480fbf",
-                "232d25aedd07c45d",
-                "c4664063f0965b50"
+                "0f483452c6480fbf"
             ]
         ]
     },
@@ -2037,7 +2178,7 @@
         "id": "9f27adedc5f528ba",
         "type": "MSSQL",
         "z": "4825264caacc700a",
-        "mssqlCN": "46c8a938095140dd",
+        "mssqlCN": "66fca4e0d43a824e",
         "name": "Amostras",
         "outField": "payload",
         "returnType": "1",
@@ -2090,7 +2231,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 740,
+        "x": 720,
         "y": 120,
         "wires": [
             [
@@ -2290,7 +2431,8 @@
                 "2c88ec9a3a6eede2",
                 "6327a5cf3b3b6970",
                 "c264d34080bb3b11",
-                "be6dcac785240779"
+                "be6dcac785240779",
+                "ae31ac4e66916739"
             ]
         ]
     },
@@ -2424,6 +2566,20 @@
         "dname": "",
         "x": 1050,
         "y": 280,
+        "wires": []
+    },
+    {
+        "id": "ae31ac4e66916739",
+        "type": "e-mail",
+        "z": "d8b91f5aab19e75d",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "afonso.duarte@fsm.pt",
+        "dname": "",
+        "x": 1060,
+        "y": 360,
         "wires": []
     }
 ]
