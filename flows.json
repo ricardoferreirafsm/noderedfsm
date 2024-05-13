@@ -59,7 +59,7 @@
         "database": "OnS3_Dash",
         "useUTC": true,
         "connectTimeout": "15000",
-        "requestTimeout": "15000",
+        "requestTimeout": "150000",
         "cancelTimeout": "5000",
         "pool": "5",
         "parseJSON": false,
@@ -291,7 +291,8 @@
                 "7e2a3a40691caf59",
                 "953401b41b82d04e",
                 "6ab4b1b99a940b41",
-                "0b901a72db47cd50"
+                "0b901a72db47cd50",
+                "9ac94ca479dc921d"
             ]
         ]
     },
@@ -483,8 +484,7 @@
         "y": 280,
         "wires": [
             [
-                "0a384673d5b1229e",
-                "2054172cb7b62b9f"
+                "0a384673d5b1229e"
             ]
         ]
     },
@@ -512,9 +512,7 @@
         "x": 190,
         "y": 280,
         "wires": [
-            [
-                "9d937cae55084018"
-            ]
+            []
         ]
     },
     {
@@ -545,6 +543,20 @@
                 "9d937cae55084018"
             ]
         ]
+    },
+    {
+        "id": "9ac94ca479dc921d",
+        "type": "e-mail",
+        "z": "7c71e4ade78eb0e9",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "afonso.duarte@fsm.pt",
+        "dname": "",
+        "x": 1280,
+        "y": 760,
+        "wires": []
     },
     {
         "id": "7fdc6427904c36fe",
@@ -1284,7 +1296,7 @@
         "outField": "payload",
         "returnType": "1",
         "throwErrors": "0",
-        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='2376' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='2376' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='2376' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='3774' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='2376' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='2376' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='2376' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='2376' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
+        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='2376' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='2376' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='2376' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='2376' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='2376' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='2376' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='2376' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
         "modeOpt": "queryMode",
         "modeOptType": "query",
         "queryOpt": "payload",
@@ -2140,9 +2152,7 @@
         "x": 110,
         "y": 160,
         "wires": [
-            [
-                "80c4fb0dcd1dc434"
-            ]
+            []
         ]
     },
     {
@@ -2239,7 +2249,8 @@
                 "61b39e400834c077",
                 "3378a93fb48a814c",
                 "036da7ecc0e30d66",
-                "051e3b61bdaec2b4"
+                "051e3b61bdaec2b4",
+                "f0c4a4eed058ea26"
             ]
         ]
     },
@@ -2340,6 +2351,20 @@
         "dname": "",
         "x": 990,
         "y": 360,
+        "wires": []
+    },
+    {
+        "id": "f0c4a4eed058ea26",
+        "type": "e-mail",
+        "z": "4825264caacc700a",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "afonso.duarte@fsm.pt",
+        "dname": "",
+        "x": 1000,
+        "y": 420,
         "wires": []
     },
     {
