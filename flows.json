@@ -106,13 +106,31 @@
         "type": "MSSQL-CN",
         "tdsVersion": "7_4",
         "name": "FSM-ONs3 Novo",
-        "server": "90.0.20.30",
+        "server": "90.0.30.50",
         "port": "1433",
         "encyption": false,
         "trustServerCertificate": true,
         "database": "OnS3_FSM",
         "useUTC": true,
         "connectTimeout": "30000",
+        "requestTimeout": "15000",
+        "cancelTimeout": "5000",
+        "pool": "5",
+        "parseJSON": false,
+        "enableArithAbort": true
+    },
+    {
+        "id": "0c921e04db1de770",
+        "type": "MSSQL-CN",
+        "tdsVersion": "7_4",
+        "name": "FSM_DASH_Novo",
+        "server": "90.0.0.18",
+        "port": "1433",
+        "encyption": false,
+        "trustServerCertificate": true,
+        "database": "OnS3_Dash",
+        "useUTC": true,
+        "connectTimeout": "15000",
         "requestTimeout": "15000",
         "cancelTimeout": "5000",
         "pool": "5",
@@ -285,14 +303,14 @@
                 "2054172cb7b62b9f",
                 "8834981e555a91de",
                 "e8e8a81b192076a4",
-                "587b74779348dc21",
                 "1e3f5025464d05ab",
                 "2e1cced76e13c507",
                 "7e2a3a40691caf59",
                 "953401b41b82d04e",
                 "6ab4b1b99a940b41",
                 "0b901a72db47cd50",
-                "9ac94ca479dc921d"
+                "9ac94ca479dc921d",
+                "7c50fa61a4a8d12a"
             ]
         ]
     },
@@ -324,20 +342,6 @@
                 "7b16c98fe81faaef"
             ]
         ]
-    },
-    {
-        "id": "587b74779348dc21",
-        "type": "e-mail",
-        "z": "7c71e4ade78eb0e9",
-        "server": "mail.sooma.com",
-        "port": "465",
-        "secure": true,
-        "tls": true,
-        "name": "jose.lima@fsm.pt",
-        "dname": "",
-        "x": 1270,
-        "y": 340,
-        "wires": []
     },
     {
         "id": "1e3f5025464d05ab",
@@ -556,6 +560,20 @@
         "dname": "",
         "x": 1280,
         "y": 760,
+        "wires": []
+    },
+    {
+        "id": "7c50fa61a4a8d12a",
+        "type": "e-mail",
+        "z": "7c71e4ade78eb0e9",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "rute.teixeira@fsm.pt",
+        "dname": "",
+        "x": 1280,
+        "y": 340,
         "wires": []
     },
     {
@@ -1805,7 +1823,7 @@
         "type": "function",
         "z": "2cc8840c3c65c436",
         "name": "Create Template",
-        "func": "let euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nlet euroGermanNumber = new Intl.NumberFormat('de-DE', {\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values = msg.payload[0]\nvar valuesMarrocos = msg.payload[1]\nvar valuesTotal = msg.payload[2]\nvar valuesMarrocosTotal = msg.payload[3]\n\nvar html_aux = \"\"\nvar html_aux_marrocos = \"\"\n\nvar date = new Date()\nvar dateNow = date.getDate() + \"/\" + (date.getMonth() + 1) + \"/\" + date.getFullYear();\nvar first = date.getDate() - date.getDay(); // First day is the day of the month - the day of the week\nvar last = first + 6;\nvar firstday = new Date(date.setDate(first));\nvar lastday = new Date(firstday).addDays(last);\nvar firstDayFormat=firstday.getDate()+\"/\"+(firstday.getMonth()+1)+\"/\"+firstday.getFullYear()\nvar lastDayFormat = lastday.getDate() + \"/\" + (lastday.getMonth() + 1) + \"/\" + lastday.getFullYear()\n\nhtml_aux = html_aux + \"<tr>\"\nhtml_aux = html_aux + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + (valuesTotal.length > 0 ? valuesTotal[0].QtyDoc : 0) + \"</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGerman.format((valuesTotal.length > 0 ? valuesTotal[0].Total : 0)) + \"€</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_marrocos = html_aux_marrocos + \"<tr>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>\" + (valuesMarrocosTotal.length>0?valuesMarrocosTotal[0].QtyDoc:0)+ \"</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>\" + euroGerman.format((valuesMarrocosTotal.length > 0 ? valuesMarrocosTotal[0].Total : 0)) + \"€</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"</tr>\"\n\nvalues.map(i => {\n    html_aux = html_aux + \"<tr>\"\n    html_aux = html_aux + \"<td>\" + i.Cliente + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.Fabrica + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.ItemID + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.CategoryDescr + \" \"+ i.SubCategoryDescr+\"</td>\"\n    html_aux = html_aux + \"<td>\" + i.QtyDoc + \"</td>\"\n    html_aux = html_aux + \"<td>\" + euroGerman.format(i.UnitPrice) + \"€</td>\"\n    html_aux = html_aux + \"<td>\" + euroGerman.format(i.Total) + \"€</td>\"\n    html_aux = html_aux + \"<td>\" + new Date(i.DataDoc).getDate() + \"/\" + (new Date(i.DataDoc).getMonth() + 1) + \"/\" + new Date(i.DataDoc).getFullYear()+ \"</td>\"\n    html_aux = html_aux + \"</tr>\"\n})\nvar html = \"<!DOCTYPE html>\" +\n    \"<html>\" +\n    \"<head>\" +\n    \"<style>\" +\n    \"table {\" +\n    \"font-family: arial, sans-serif;\" +\n    \"border-collapse: collapse;\" +\n    \"width: 100%;\" +\n    \"}\" +\n\n    \"td{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: right;\" +\n    \"font-size: 10px;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"th{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: left;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"tr:nth-child(even) {\" +\n    \"background-color: #dddddd;\" +\n    \"}\" +\n    \"</style>\" +\n    \"</head>\" +\n    \"<body>\" +\n    \"<h4> Bom Dia.</h4>\" +\n    \"<div></div>\" +\n    \"<h4> PLANO ENTREGAS PORTUGAL DE \" + firstDayFormat + \" A \"+lastDayFormat+\"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Fábrica</th>\" +\n    \"<th>Modelo</th>\" +\n    \"<th>Categoria</th>\" +\n    \"<th>Quantidade</th>\" +\n    \"<th>Preço Unit €</th>\" +\n    \"<th>Total €</th>\" +\n    \"<th>Data</th>\" +\n    \"</tr>\"\nhtml = html + html_aux\nhtml=html+\"</table> <br></br>\"+\n    \"<h4> PLANO ENTREGAS MARROCOS DE \" + firstDayFormat + \" A \" + lastDayFormat + \"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Fábrica</th>\" +\n    \"<th>Modelo</th>\" +\n    \"<th>Categoria</th>\" +\n    \"<th>Quantidade</th>\" +\n    \"<th>Preço Unit €</th>\" +\n    \"<th>Total €</th>\" +\n    \"<th>Data</th>\" +\n    \"</tr>\"\nhtml=html+html_aux_marrocos\nhtml = html + \"</table><br></br> </body> </html>\"\n\nmsg.payload = html\nmsg.plaintext = 'text:html'\nmsg.topic = 'PLANO ENTREGAS FSM DE ' + firstDayFormat + ' A '+lastDayFormat+'.';\nmsg.from = 'ricardo.ferreira@fsm.pt'\nreturn msg;",
+        "func": "let euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nlet euroGermanNumber = new Intl.NumberFormat('de-DE', {\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values = msg.payload[0]\nvar valuesMarrocos = msg.payload[1]\nvar valuesTotal = msg.payload[2]\nvar valuesMarrocosTotal = msg.payload[3]\n\nvar html_aux = \"\"\nvar html_aux_marrocos = \"\"\n\nvar date = new Date()\nvar dateNow = date.getDate() + \"/\" + (date.getMonth() + 1) + \"/\" + date.getFullYear();\nvar first = date.getDate() - date.getDay(); // First day is the day of the month - the day of the week\n\nvar firstday = new Date(date.setDate(first));\nvar lastday = new Date(firstday).addDays(6);\nvar firstDayFormat = firstday.getDate() + \"/\" + (firstday.getMonth() + 1) + \"/\" + firstday.getFullYear()\nvar lastDayFormat = lastday.getDate() + \"/\" + (lastday.getMonth() + 1) + \"/\" + lastday.getFullYear()\n\nhtml_aux = html_aux + \"<tr>\"\nhtml_aux = html_aux + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + (valuesTotal.length > 0 ? valuesTotal[0].QtyDoc : 0) + \"</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGerman.format((valuesTotal.length > 0 ? valuesTotal[0].Total : 0)) + \"€</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_marrocos = html_aux_marrocos + \"<tr>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>\" + (valuesMarrocosTotal.length>0?valuesMarrocosTotal[0].QtyDoc:0)+ \"</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>\" + euroGerman.format((valuesMarrocosTotal.length > 0 ? valuesMarrocosTotal[0].Total : 0)) + \"€</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"</tr>\"\n\nvalues.map(i => {\n    html_aux = html_aux + \"<tr>\"\n    html_aux = html_aux + \"<td>\" + i.Cliente + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.Fabrica + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.ItemID + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.CategoryDescr + \" \"+ i.SubCategoryDescr+\"</td>\"\n    html_aux = html_aux + \"<td>\" + i.QtyDoc + \"</td>\"\n    html_aux = html_aux + \"<td>\" + euroGerman.format(i.UnitPrice) + \"€</td>\"\n    html_aux = html_aux + \"<td>\" + euroGerman.format(i.Total) + \"€</td>\"\n    html_aux = html_aux + \"<td>\" + new Date(i.DataDoc).getDate() + \"/\" + (new Date(i.DataDoc).getMonth() + 1) + \"/\" + new Date(i.DataDoc).getFullYear()+ \"</td>\"\n    html_aux = html_aux + \"</tr>\"\n})\nvar html = \"<!DOCTYPE html>\" +\n    \"<html>\" +\n    \"<head>\" +\n    \"<style>\" +\n    \"table {\" +\n    \"font-family: arial, sans-serif;\" +\n    \"border-collapse: collapse;\" +\n    \"width: 100%;\" +\n    \"}\" +\n\n    \"td{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: right;\" +\n    \"font-size: 10px;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"th{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: left;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"tr:nth-child(even) {\" +\n    \"background-color: #dddddd;\" +\n    \"}\" +\n    \"</style>\" +\n    \"</head>\" +\n    \"<body>\" +\n    \"<h4> Bom Dia.</h4>\" +\n    \"<div></div>\" +\n    \"<h4> PLANO ENTREGAS PORTUGAL DE \" + firstDayFormat + \" A \"+lastDayFormat+\"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Fábrica</th>\" +\n    \"<th>Modelo</th>\" +\n    \"<th>Categoria</th>\" +\n    \"<th>Quantidade</th>\" +\n    \"<th>Preço Unit €</th>\" +\n    \"<th>Total €</th>\" +\n    \"<th>Data</th>\" +\n    \"</tr>\"\nhtml = html + html_aux\nhtml=html+\"</table> <br></br>\"+\n    \"<h4> PLANO ENTREGAS MARROCOS DE \" + firstDayFormat + \" A \" + lastDayFormat + \"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Fábrica</th>\" +\n    \"<th>Modelo</th>\" +\n    \"<th>Categoria</th>\" +\n    \"<th>Quantidade</th>\" +\n    \"<th>Preço Unit €</th>\" +\n    \"<th>Total €</th>\" +\n    \"<th>Data</th>\" +\n    \"</tr>\"\nhtml=html+html_aux_marrocos\nhtml = html + \"</table><br></br> </body> </html>\"\n\nmsg.payload = html\nmsg.plaintext = 'text:html'\nmsg.topic = 'PLANO ENTREGAS FSM DE ' + firstDayFormat + ' A '+lastDayFormat+'.';\nmsg.from = 'ricardo.ferreira@fsm.pt'\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1815,7 +1833,12 @@
         "y": 120,
         "wires": [
             [
-                "0f483452c6480fbf"
+                "0f483452c6480fbf",
+                "232d25aedd07c45d",
+                "c4664063f0965b50",
+                "ee1cbb80d8a128e1",
+                "efc588956475980f",
+                "f94f641d4cba356e"
             ]
         ]
     },
@@ -1862,20 +1885,6 @@
         "wires": []
     },
     {
-        "id": "c1bff00d168f8b03",
-        "type": "e-mail",
-        "z": "2cc8840c3c65c436",
-        "server": "mail.sooma.com",
-        "port": "465",
-        "secure": true,
-        "tls": true,
-        "name": "jose.lima@fsm.pt",
-        "dname": "",
-        "x": 1190,
-        "y": 300,
-        "wires": []
-    },
-    {
         "id": "ee1cbb80d8a128e1",
         "type": "e-mail",
         "z": "2cc8840c3c65c436",
@@ -1886,7 +1895,7 @@
         "name": "jmachado@fsm.pt",
         "dname": "",
         "x": 1190,
-        "y": 360,
+        "y": 300,
         "wires": []
     },
     {
@@ -1932,6 +1941,34 @@
         "statusType": "auto",
         "x": 580,
         "y": 200,
+        "wires": []
+    },
+    {
+        "id": "efc588956475980f",
+        "type": "e-mail",
+        "z": "2cc8840c3c65c436",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "afonso.duarte@fsm.pt",
+        "dname": "",
+        "x": 1200,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "f94f641d4cba356e",
+        "type": "e-mail",
+        "z": "2cc8840c3c65c436",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "rute.teixeira@fsm.pt",
+        "dname": "",
+        "x": 1200,
+        "y": 420,
         "wires": []
     },
     {
@@ -2193,7 +2230,7 @@
         "outField": "payload",
         "returnType": "1",
         "throwErrors": "0",
-        "query": "Select p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand cod.CreationDateTime>=DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()) and cod.CreationDateTime<=DATEADD(day,7,DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()))\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand cod.CreationDateTime>=DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()) and cod.CreationDateTime<=DATEADD(day,7,DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()))\nOrder by Total DESC\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE())-1 and cod.ProductionStatus!='ANULADA'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE())-1 and cod.ProductionStatus!='ANULADA'\nOrder by Total DESC",
+        "query": "Select p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand cod.CreationDateTime>=DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()) and cod.CreationDateTime<=DATEADD(day,7,DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()))\nand imdv.VersionName not like '%intertek%'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%'\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand cod.CreationDateTime>=DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()) and cod.CreationDateTime<=DATEADD(day,7,DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()))\nand imdv.VersionName not like '%intertek%'\nOrder by Total DESC\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE())-1 and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE())-1 and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%'\nOrder by Total DESC\n\n\nSelect p.PartnerID, p.PartnerName,COUNT(*) Total\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\n        and cod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tgroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\n\tfrom ClientOrderDetails cod\n\tjoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tWhere cod.DocType='OP' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and\n    cod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0\n\tgroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\n\nSelect COUNT(*) Total\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and \n\t\tcod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\nOrder by Total DESC\n\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='OP' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and\ncod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0\nOrder by Total DESC\n\nBegin\n\nWITH sample_counts AS (\n    Select SUM(QtyOrd) total_samples\n\tfrom ClientOrderDetails cod\n\tjoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\n\tWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\n),\norder_counts AS (\n    Select COUNT(*) total_orders\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and \n\t\tcod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\n)\n-- Unindo as duas contagens\nSELECT \n    CASE \n        WHEN oc.total_orders = 0 THEN NULL\n        ELSE sc.total_samples / oc.total_orders\n    END AS racio\nFROM \n    sample_counts sc, order_counts oc\nEND\n\nBegin\nWITH sample_counts AS (\n    Select p.PartnerID, p.PartnerName, SUM(QtyOrd) total_samples\n\tfrom ClientOrderDetails cod\n\tjoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\n\tgroup by p.PartnerID, p.PartnerName\n),\norder_counts AS (\n    Select p.PartnerID, p.PartnerName,COUNT(*) total_orders\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\n        and cod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tgroup by p.PartnerID, p.PartnerName\n)\n-- Unindo as duas contagens\nSELECT\n\tsc.PartnerID,\n\tsc.PartnerName,\n    sc.total_samples amostras,\n    oc.total_orders encomendas,\n    CASE \n        WHEN oc.total_orders = 0 THEN NULL\n        ELSE sc.total_samples / oc.total_orders\n    END AS racio\nFROM \n    sample_counts sc\nLEFT JOIN \n    order_counts oc ON sc.PartnerID = oc.PartnerID\n    Order by total_samples DESC\nEND",
         "modeOpt": "queryMode",
         "modeOptType": "query",
         "queryOpt": "payload",
@@ -2222,11 +2259,11 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 520,
+        "x": 500,
         "y": 120,
         "wires": [
             [
-                "ae63ffb79bae5e71"
+                "1f4f953f3c258331"
             ]
         ]
     },
@@ -2235,7 +2272,7 @@
         "type": "function",
         "z": "4825264caacc700a",
         "name": "Create Template",
-        "func": "let euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nlet euroGermanNumber = new Intl.NumberFormat('de-DE', {\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 2,\n})\nvar valuesGlobal = msg.payload[0]\nvar valuesGlobalTotal=msg.payload[2]\nvar valuesWeek = msg.payload[1]\nvar valuesWeekTotal = msg.payload[3]\nvar valuesGlobalYearAnt=msg.payload[4]\nvar valuesGlobalYearAntTotal = msg.payload[5]\n\nvar html_aux = \"\"\nvar html_aux_week=\"\"\n\nvar date = new Date()\nvar dateNow = date.getDate() + \"/\" + (date.getMonth() + 1) + \"/\" + date.getFullYear();\nvar first = date.getDate() - date.getDay(); // First day is the day of the month - the day of the week\n\nvar firstday = new Date(date.setDate(first));\nvar lastday = new Date(firstday).addDays(6);\nvar firstDayFormat=firstday.getDate()+\"/\"+(firstday.getMonth()+1)+\"/\"+firstday.getFullYear()\nvar lastDayFormat = lastday.getDate() + \"/\" + (lastday.getMonth() + 1)+\"/\"+ lastday.getFullYear()\n\nhtml_aux = html_aux + \"<td><h4>VALOR TOTAL</h4></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGermanNumber.format(valuesGlobalTotal.length > 0 ? valuesGlobalTotal[0].Total:0) + \"</h4></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGermanNumber.format(valuesGlobalYearAntTotal.length > 0 ? valuesGlobalYearAntTotal[0].Total : 0) + \"</h4></td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_week = html_aux_week + \"<td><h4>VALOR TOTAL</h4></td>\"\nhtml_aux_week = html_aux_week + \"<td><h4>\" + euroGermanNumber.format(valuesWeekTotal.length > 0 ? valuesWeekTotal[0].Total : 0) + \"</h4></td>\"\nhtml_aux_week = html_aux_week + \"</tr>\"\n\nvaluesGlobal.map(i => {\n    html_aux = html_aux + \"<tr>\"\n    html_aux = html_aux + \"<td>\" + i.PartnerName + \"</td>\"\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(i.Total) + \"</td>\"\n    var value=0;\n    valuesGlobalYearAnt.map(j=>{\n        if(j.PartnerID===i.PartnerID){\n            value = j.Total\n        }\n    })\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(value) + \"</td>\"\n})\n\nvaluesWeek.map(i => {\n    html_aux_week = html_aux_week + \"<tr>\"\n    html_aux_week = html_aux_week + \"<td>\" + i.PartnerName + \"</td>\"\n    html_aux_week = html_aux_week + \"<td>\" + euroGermanNumber.format(i.Total) + \"</td>\"\n})\n\nvar html = \"<!DOCTYPE html>\" +\n    \"<html>\" +\n    \"<head>\" +\n    \"<style>\" +\n    \"table {\" +\n    \"font-family: arial, sans-serif;\" +\n    \"border-collapse: collapse;\" +\n    \"width: 100%;\" +\n    \"}\" +\n\n    \"td{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: right;\" +\n    \"font-size: 10px;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"th{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: left;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"tr:nth-child(even) {\" +\n    \"background-color: #dddddd;\" +\n    \"}\" +\n    \"</style>\" +\n    \"</head>\" +\n    \"<body>\" +\n    \"<h4> Bom Dia.</h4>\" +\n    \"<div></div>\" +\n    \"<h4> MAPA DE AMOSTRAS SEMANAL DE \"+firstDayFormat+\" A \"+lastDayFormat+\"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Quantidade Total</th>\" +\n    \"</tr>\"\nhtml = html + html_aux_week\nhtml=html+\"</table><br></br>\"\nhtml = html + \"<h4> MAPA DE AMOSTRAS ANUAL DE \" +(new Date().getFullYear())+ \"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\"\nhtml = html+\"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Quantidade Total \" + (new Date().getFullYear())+\"</th>\" +\n    \"<th>Quantidade Total \" + ((new Date().getFullYear())-1) + \"</th>\" +\n    \"</tr>\"\nhtml=html+html_aux;\nhtml = html + \"</table><br></br> </body> </html>\"\n\nmsg.payload = html\nmsg.plaintext = 'text:html'\nmsg.topic = 'MAPA DE AMOSTRAS SEMANAL DE '+firstDayFormat+' A '+lastDayFormat+'.';\nmsg.from = 'ricardo.ferreira@fsm.pt'\nreturn msg;",
+        "func": "let euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nlet euroGermanNumber = new Intl.NumberFormat('de-DE', {\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 2,\n})\nvar valuesGlobal = msg.payload[0]\nvar valuesGlobalTotal=msg.payload[2]\nvar valuesWeek = msg.payload[1]\nvar valuesWeekTotal = msg.payload[3]\nvar valuesGlobalYearAnt=msg.payload[4]\nvar valuesGlobalYearAntTotal = msg.payload[5]\n\nvar countEncomendasGlobal = msg.payload[6]\nvar countEncomendasQuantidadeGlobal = msg.payload[7]\n\nvar countEncomendasGlobalTotal = msg.payload[8]\nvar countEncomendasQuantidadeGlobalTotal = msg.payload[9]\n\nvar html_aux = \"\"\nvar html_aux_week=\"\"\n\nvar date = new Date()\nvar dateNow = date.getDate() + \"/\" + (date.getMonth() + 1) + \"/\" + date.getFullYear();\nvar first = date.getDate() - date.getDay(); // First day is the day of the month - the day of the week\n\nvar firstday = new Date(date.setDate(first));\nvar lastday = new Date(firstday).addDays(6);\nvar firstDayFormat=firstday.getDate()+\"/\"+(firstday.getMonth()+1)+\"/\"+firstday.getFullYear()\nvar lastDayFormat = lastday.getDate() + \"/\" + (lastday.getMonth() + 1)+\"/\"+ lastday.getFullYear()\n\nhtml_aux = html_aux + \"<td><h4>VALOR TOTAL</h4></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGermanNumber.format(valuesGlobalTotal.length > 0 ? valuesGlobalTotal[0].Total:0) + \"</h4></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGermanNumber.format(valuesGlobalYearAntTotal.length > 0 ? valuesGlobalYearAntTotal[0].Total : 0) + \"</h4></td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_week = html_aux_week + \"<td><h4>VALOR TOTAL</h4></td>\"\nhtml_aux_week = html_aux_week + \"<td><h4>\" + euroGermanNumber.format(valuesWeekTotal.length > 0 ? valuesWeekTotal[0].Total : 0) + \"</h4></td>\"\nhtml_aux_week = html_aux_week + \"</tr>\"\n\nvaluesGlobal.map(i => {\n    html_aux = html_aux + \"<tr>\"\n    html_aux = html_aux + \"<td>\" + i.PartnerName + \"</td>\"\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(i.Total) + \"</td>\"\n    var value=0;\n    valuesGlobalYearAnt.map(j=>{\n        if(j.PartnerID===i.PartnerID){\n            value = j.Total\n        }\n    })\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(value) + \"</td>\"\n\n    var valueEncomendas = 0;\n    countEncomendasGlobal.map(j => {\n        if (j.PartnerID === i.PartnerID) {\n            valueEncomendas = j.Total\n        }\n    })\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(valueEncomendas) + \"</td>\"\n\n    var valueQuantidades = 0;\n    countEncomendasQuantidadeGlobal.map(j => {\n        if (j.PartnerID === i.PartnerID) {\n            valueQuantidades = j.Total\n        }\n    })\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(valueQuantidades) + \"</td>\"\n})\n\nvaluesWeek.map(i => {\n    html_aux_week = html_aux_week + \"<tr>\"\n    html_aux_week = html_aux_week + \"<td>\" + i.PartnerName + \"</td>\"\n    html_aux_week = html_aux_week + \"<td>\" + euroGermanNumber.format(i.Total) + \"</td>\"\n})\n\nvar html = \"<!DOCTYPE html>\" +\n    \"<html>\" +\n    \"<head>\" +\n    \"<style>\" +\n    \"table {\" +\n    \"font-family: arial, sans-serif;\" +\n    \"border-collapse: collapse;\" +\n    \"width: 100%;\" +\n    \"}\" +\n\n    \"td{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: right;\" +\n    \"font-size: 10px;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"th{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: left;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"tr:nth-child(even) {\" +\n    \"background-color: #dddddd;\" +\n    \"}\" +\n    \"</style>\" +\n    \"</head>\" +\n    \"<body>\" +\n    \"<h4> Bom Dia.</h4>\" +\n    \"<div></div>\" +\n    \"<h4> MAPA DE AMOSTRAS SEMANAL DE \"+firstDayFormat+\" A \"+lastDayFormat+\"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Quantidade Total</th>\" +\n    \"</tr>\"\nhtml = html + html_aux_week\nhtml=html+\"</table><br></br>\"\nhtml = html + \"<h4> MAPA DE AMOSTRAS ANUAL DE \" +(new Date().getFullYear())+ \"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\"\nhtml = html+\"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Quantidade Total \" + (new Date().getFullYear())+\"</th>\" +\n    \"<th>Quantidade Total \" + ((new Date().getFullYear())-1) + \"</th>\" +\n    \"</tr>\"\nhtml=html+html_aux;\nhtml = html + \"</table><br></br> </body> </html>\"\n\nmsg.payload = html\nmsg.plaintext = 'text:html'\nmsg.topic = 'MAPA DE AMOSTRAS SEMANAL DE '+firstDayFormat+' A '+lastDayFormat+'.';\nmsg.from = 'ricardo.ferreira@fsm.pt'\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2244,14 +2281,7 @@
         "x": 720,
         "y": 120,
         "wires": [
-            [
-                "e101cdd59d92eb6e",
-                "61b39e400834c077",
-                "3378a93fb48a814c",
-                "036da7ecc0e30d66",
-                "051e3b61bdaec2b4",
-                "f0c4a4eed058ea26"
-            ]
+            []
         ]
     },
     {
@@ -2295,20 +2325,6 @@
         "dname": "",
         "x": 1000,
         "y": 120,
-        "wires": []
-    },
-    {
-        "id": "61b39e400834c077",
-        "type": "e-mail",
-        "z": "4825264caacc700a",
-        "server": "mail.sooma.com",
-        "port": "465",
-        "secure": true,
-        "tls": true,
-        "name": "jose.lima@fsm.pt",
-        "dname": "",
-        "x": 990,
-        "y": 180,
         "wires": []
     },
     {
@@ -2365,6 +2381,44 @@
         "dname": "",
         "x": 1000,
         "y": 420,
+        "wires": []
+    },
+    {
+        "id": "1f4f953f3c258331",
+        "type": "function",
+        "z": "4825264caacc700a",
+        "name": "Create Template",
+        "func": "let euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nlet euroGermanNumber = new Intl.NumberFormat('de-DE', {\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 2,\n})\nvar valuesGlobal = msg.payload[0]\nvar valuesGlobalTotal=msg.payload[2]\nvar valuesWeek = msg.payload[1]\nvar valuesWeekTotal = msg.payload[3]\nvar valuesGlobalYearAnt=msg.payload[4]\nvar valuesGlobalYearAntTotal = msg.payload[5]\n\nvar countEncomendasGlobal = msg.payload[6]\nvar countEncomendasQuantidadeGlobal = msg.payload[7]\n\nvar countEncomendasGlobalTotal = msg.payload[8]\nvar countEncomendasQuantidadeGlobalTotal = msg.payload[9]\n\nvar countRacioTotal= msg.payload[10]\nvar countRacioCliente = msg.payload[11]\n\nvar html_aux = \"\"\nvar html_aux_week=\"\"\n\nvar date = new Date()\nvar dateNow = date.getDate() + \"/\" + (date.getMonth() + 1) + \"/\" + date.getFullYear();\nvar first = date.getDate() - date.getDay(); // First day is the day of the month - the day of the week\n\nvar firstday = new Date(date.setDate(first));\nvar lastday = new Date(firstday).addDays(6);\nvar firstDayFormat=firstday.getDate()+\"/\"+(firstday.getMonth()+1)+\"/\"+firstday.getFullYear()\nvar lastDayFormat = lastday.getDate() + \"/\" + (lastday.getMonth() + 1)+\"/\"+ lastday.getFullYear()\n\nhtml_aux = html_aux + \"<td><h4>VALOR TOTAL</h4></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGermanNumber.format(valuesGlobalTotal.length > 0 ? valuesGlobalTotal[0].Total:0) + \"</h4></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGermanNumber.format(valuesGlobalYearAntTotal.length > 0 ? valuesGlobalYearAntTotal[0].Total : 0) + \"</h4></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGermanNumber.format(countEncomendasGlobalTotal.length > 0 ? countEncomendasGlobalTotal[0].Total : 0) + \"</h4></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGermanNumber.format(countEncomendasQuantidadeGlobalTotal.length > 0 ? countEncomendasQuantidadeGlobalTotal[0].Total : 0) + \"</h4></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGermanNumber.format(countRacioTotal.length > 0 ? countRacioTotal[0].racio : 0) + \"</h4></td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_week = html_aux_week + \"<td><h4>VALOR TOTAL</h4></td>\"\nhtml_aux_week = html_aux_week + \"<td><h4>\" + euroGermanNumber.format(valuesWeekTotal.length > 0 ? valuesWeekTotal[0].Total : 0) + \"</h4></td>\"\nhtml_aux_week = html_aux_week + \"</tr>\"\n\nvaluesGlobal.map(i => {\n    html_aux = html_aux + \"<tr>\"\n    html_aux = html_aux + \"<td>\" + i.PartnerName + \"</td>\"\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(i.Total) + \"</td>\"\n    var value=0;\n    valuesGlobalYearAnt.map(j=>{\n        if(j.PartnerID===i.PartnerID){\n            value = j.Total\n        }\n    })\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(value) + \"</td>\"\n\n    var valueEncomendas = 0;\n    countEncomendasGlobal.map(j => {\n        if (j.PartnerID === i.PartnerID) {\n            valueEncomendas = j.Total\n        }\n    })\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(valueEncomendas) + \"</td>\"\n\n    var valueQuantidades = 0;\n    countEncomendasQuantidadeGlobal.map(j => {\n        if (j.PartnerID === i.PartnerID) {\n            valueQuantidades = j.Total\n        }\n    })\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(valueQuantidades) + \"</td>\"\n\n    var valueRacio = 0;\n    countRacioCliente.map(j => {\n        if (j.PartnerID === i.PartnerID) {\n            valueRacio = j.racio\n        }\n    })\n    html_aux = html_aux + \"<td>\" + euroGermanNumber.format(valueRacio) + \"</td>\"\n})\n\nvaluesWeek.map(i => {\n    html_aux_week = html_aux_week + \"<tr>\"\n    html_aux_week = html_aux_week + \"<td>\" + i.PartnerName + \"</td>\"\n    html_aux_week = html_aux_week + \"<td>\" + euroGermanNumber.format(i.Total) + \"</td>\"\n})\n\nvar html = \"<!DOCTYPE html>\" +\n    \"<html>\" +\n    \"<head>\" +\n    \"<style>\" +\n    \"table {\" +\n    \"font-family: arial, sans-serif;\" +\n    \"border-collapse: collapse;\" +\n    \"width: 100%;\" +\n    \"}\" +\n\n    \"td{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: right;\" +\n    \"font-size: 10px;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"th{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: left;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"tr:nth-child(even) {\" +\n    \"background-color: #dddddd;\" +\n    \"}\" +\n    \"</style>\" +\n    \"</head>\" +\n    \"<body>\" +\n    \"<h4> Bom Dia.</h4>\" +\n    \"<div></div>\" +\n    \"<h4> MAPA DE AMOSTRAS SEMANAL DE \"+firstDayFormat+\" A \"+lastDayFormat+\"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Quantidade Total</th>\" +\n    \"</tr>\"\nhtml = html + html_aux_week\nhtml=html+\"</table><br></br>\"\nhtml = html + \"<h4> MAPA DE AMOSTRAS ANUAL DE \" +(new Date().getFullYear())+ \"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\"\nhtml = html+\"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Quantidade Total \" + (new Date().getFullYear())+\"</th>\" +\n    \"<th>Quantidade Total \" + ((new Date().getFullYear())-1) + \"</th>\" +\n    \"<th>Nr de Encomendas Total \" + (new Date().getFullYear()) + \"</th>\" +\n    \"<th>Quantidades de Peças em Encomendas  \" + (new Date().getFullYear()) + \"</th>\" +\n    \"<th>Rácio Amostras/Encomendas  \" + (new Date().getFullYear()) + \"</th>\" +\n    \"</tr>\"\nhtml=html+html_aux;\nhtml = html + \"</table><br></br> </body> </html>\"\n\nmsg.payload = html\nmsg.plaintext = 'text:html'\nmsg.topic = 'MAPA DE AMOSTRAS SEMANAL DE '+firstDayFormat+' A '+lastDayFormat+'.';\nmsg.from = 'ricardo.ferreira@fsm.pt'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 180,
+        "wires": [
+            [
+                "e101cdd59d92eb6e",
+                "3378a93fb48a814c",
+                "036da7ecc0e30d66",
+                "051e3b61bdaec2b4",
+                "f0c4a4eed058ea26",
+                "1b773bee6c22c01b"
+            ]
+        ]
+    },
+    {
+        "id": "1b773bee6c22c01b",
+        "type": "e-mail",
+        "z": "4825264caacc700a",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "rute.teixeira@fsm.pt",
+        "dname": "",
+        "x": 1000,
+        "y": 180,
         "wires": []
     },
     {
@@ -2456,8 +2510,10 @@
                 "2c88ec9a3a6eede2",
                 "6327a5cf3b3b6970",
                 "c264d34080bb3b11",
-                "be6dcac785240779",
-                "ae31ac4e66916739"
+                "b0bf67d64e3c89b8",
+                "79991a3a56935ef4",
+                "ae31ac4e66916739",
+                "9911df62b17ff5c3"
             ]
         ]
     },
@@ -2580,20 +2636,6 @@
         ]
     },
     {
-        "id": "be6dcac785240779",
-        "type": "e-mail",
-        "z": "d8b91f5aab19e75d",
-        "server": "mail.sooma.com",
-        "port": "465",
-        "secure": true,
-        "tls": true,
-        "name": "jose.lima@fsm.pt",
-        "dname": "",
-        "x": 1050,
-        "y": 280,
-        "wires": []
-    },
-    {
         "id": "ae31ac4e66916739",
         "type": "e-mail",
         "z": "d8b91f5aab19e75d",
@@ -2605,6 +2647,20 @@
         "dname": "",
         "x": 1060,
         "y": 360,
+        "wires": []
+    },
+    {
+        "id": "9911df62b17ff5c3",
+        "type": "e-mail",
+        "z": "d8b91f5aab19e75d",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "rute.teixeira@fsm.pt",
+        "dname": "",
+        "x": 1060,
+        "y": 280,
         "wires": []
     }
 ]
