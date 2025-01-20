@@ -48,6 +48,14 @@
         "env": []
     },
     {
+        "id": "073150d57069898e",
+        "type": "tab",
+        "label": "Import Sap",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "5e1de6a648baf360",
         "type": "MSSQL-CN",
         "tdsVersion": "7_4",
@@ -311,7 +319,6 @@
                 "7e2a3a40691caf59",
                 "953401b41b82d04e",
                 "0b901a72db47cd50",
-                "9ac94ca479dc921d",
                 "7c50fa61a4a8d12a"
             ]
         ]
@@ -558,7 +565,7 @@
         "port": "465",
         "secure": true,
         "tls": true,
-        "name": "afonso.duarte@fsm.pt",
+        "name": "placido.santos@fsm.pt",
         "dname": "",
         "x": 1280,
         "y": 760,
@@ -594,7 +601,8 @@
         "wires": [
             [
                 "0a384673d5b1229e",
-                "8834981e555a91de"
+                "8834981e555a91de",
+                "9ac94ca479dc921d"
             ]
         ]
     },
@@ -711,7 +719,7 @@
         "name": "ricardo.ferreira@fsm.pt",
         "dname": "",
         "x": 1480,
-        "y": 680,
+        "y": 1380,
         "wires": []
     },
     {
@@ -1368,7 +1376,7 @@
         "finalize": "",
         "libs": [],
         "x": 530,
-        "y": 1360,
+        "y": 1520,
         "wires": [
             []
         ]
@@ -1393,7 +1401,7 @@
         "rowsType": "msg",
         "params": [],
         "x": 420,
-        "y": 820,
+        "y": 760,
         "wires": [
             [
                 "bf890cc11fea651d"
@@ -1412,10 +1420,10 @@
         "finalize": "",
         "libs": [],
         "x": 890,
-        "y": 820,
+        "y": 760,
         "wires": [
             [
-                "677e96f04cfb3529"
+                "e678e81632c5e30e"
             ]
         ]
     },
@@ -1431,7 +1439,7 @@
         "finalize": "",
         "libs": [],
         "x": 640,
-        "y": 820,
+        "y": 760,
         "wires": [
             [
                 "23cec0ea8f1cc595"
@@ -1457,8 +1465,8 @@
         "rows": "rows",
         "rowsType": "msg",
         "params": [],
-        "x": 410,
-        "y": 940,
+        "x": 430,
+        "y": 1580,
         "wires": [
             [
                 "30aa20350a0a0913"
@@ -1476,12 +1484,10 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 840,
-        "y": 940,
+        "x": 860,
+        "y": 1580,
         "wires": [
-            [
-                "d0ed2892f1a67a79"
-            ]
+            []
         ]
     },
     {
@@ -1495,76 +1501,11 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 640,
-        "y": 940,
+        "x": 660,
+        "y": 1580,
         "wires": [
             [
                 "f2f07233f9483f55"
-            ]
-        ]
-    },
-    {
-        "id": "d0ed2892f1a67a79",
-        "type": "MSSQL",
-        "z": "f12c30ed7e28c309",
-        "mssqlCN": "c1ac5661abe38939",
-        "name": "LAMAREL",
-        "outField": "payload",
-        "returnType": "1",
-        "throwErrors": "0",
-        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='3648' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='3648' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='3648' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='3648' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='3648' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='3648' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='3648' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
-        "modeOpt": "queryMode",
-        "modeOptType": "query",
-        "queryOpt": "payload",
-        "queryOptType": "editor",
-        "paramsOpt": "queryParams",
-        "paramsOptType": "none",
-        "rows": "rows",
-        "rowsType": "msg",
-        "params": [],
-        "x": 430,
-        "y": 1000,
-        "wires": [
-            [
-                "f81a78fa99aaf5f5"
-            ]
-        ]
-    },
-    {
-        "id": "07d5ce07cf18471c",
-        "type": "function",
-        "z": "f12c30ed7e28c309",
-        "name": "Create Template LAMAREL",
-        "func": "function vendas(values){\n    var htmlValues=\"\"\n    const d = new Date();\n    let year = d.getFullYear();\n    var a2022=0\n    var a2021=0\n    var a2020=0\n    var a2019=0\n    \n    values.map(i=>{\n        if(i.ano===year){\n            a2022 = i.Soma\n        }\n        else if(i.ano===year-1){\n            a2021 = i.Soma\n        }\n        else if(i.ano===year-2){\n            a2020 = i.Soma\n        }\n        else if(i.ano===year-3){\n            a2019 = i.Soma\n        }\n    })\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2022)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2021)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2020)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2019)+\"</td>\"\n    return htmlValues;\n}\n\nfunction vendasAno(values){\n    var htmlValues=\"\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[1][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[2][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[3][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[4][0].Soma)+\"</td>\"\n    return htmlValues\n}\nlet euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values=msg.payload\n\nvar year_html=\"\"\nconst d = new Date();\nlet year = d.getFullYear();\nvar datestring = d.getDate()  + \"/\" + (d.getMonth()+1) + \"/\" + d.getFullYear()\nyear_html= year_html+\"<td>\"+year+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-1)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-2)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-3)+\"</td>\"\n\n\nvar vendasTotais=vendas(values[0])\nvar vendasData=vendasAno(values)\nvar vendasMes=vendas(values[5])\nvar vendasMesData=vendas(values[6])\n\nvar html_aux =\"<h4>ACUMULADOS DE VENDAS - LAMAREL</h4>\"+\n\"<table>\"+\n  \"<tr>\"+\n    \"<th>Total Vendas</th>\"+\n    year_html+\n  \"</tr>\"+\n  \"<tr>\"+\n    \"<td>Total Ano</td>\"+\n    vendasTotais+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/01 a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/\"+(d.getMonth()+1)+\" a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasMesData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total Mês</td>\"+\n    vendasMes+\n    \"</tr>\"+\n\"</table>\"\nvar html_global=global.get('html')\nhtml_aux=html_global+html_aux\nglobal.set('html',html_aux)\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 900,
-        "y": 1000,
-        "wires": [
-            [
-                "a7b1608b72d660b8"
-            ]
-        ]
-    },
-    {
-        "id": "f81a78fa99aaf5f5",
-        "type": "function",
-        "z": "f12c30ed7e28c309",
-        "name": "",
-        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 640,
-        "y": 1000,
-        "wires": [
-            [
-                "07d5ce07cf18471c"
             ]
         ]
     },
@@ -1587,8 +1528,8 @@
         "rows": "rows",
         "rowsType": "msg",
         "params": [],
-        "x": 410,
-        "y": 1060,
+        "x": 430,
+        "y": 1700,
         "wires": [
             [
                 "cf3e420f33079f3f"
@@ -1606,8 +1547,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 880,
-        "y": 1060,
+        "x": 900,
+        "y": 1700,
         "wires": [
             [
                 "30606848d26226ed"
@@ -1625,8 +1566,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 640,
-        "y": 1060,
+        "x": 660,
+        "y": 1700,
         "wires": [
             [
                 "79b10c49a3444b8d"
@@ -1652,8 +1593,8 @@
         "rows": "rows",
         "rowsType": "msg",
         "params": [],
-        "x": 420,
-        "y": 1120,
+        "x": 440,
+        "y": 1760,
         "wires": [
             [
                 "88cc2afa7421054c"
@@ -1671,12 +1612,10 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 890,
-        "y": 1120,
+        "x": 910,
+        "y": 1760,
         "wires": [
-            [
-                "aef633fab25d834d"
-            ]
+            []
         ]
     },
     {
@@ -1690,8 +1629,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 640,
-        "y": 1120,
+        "x": 660,
+        "y": 1760,
         "wires": [
             [
                 "c55b5ce46a3f6de7"
@@ -1709,7 +1648,7 @@
         "name": "nuno.franca@fsm.pt",
         "dname": "",
         "x": 1480,
-        "y": 480,
+        "y": 1180,
         "wires": []
     },
     {
@@ -1723,7 +1662,7 @@
         "name": "fsm.daf@fsm.pt",
         "dname": "",
         "x": 1460,
-        "y": 520,
+        "y": 1220,
         "wires": []
     },
     {
@@ -1737,7 +1676,7 @@
         "name": "jmachado@fsm.pt",
         "dname": "",
         "x": 1470,
-        "y": 560,
+        "y": 1260,
         "wires": []
     },
     {
@@ -1751,7 +1690,7 @@
         "name": "antonio.ferreira@fsm.pt",
         "dname": "",
         "x": 1490,
-        "y": 600,
+        "y": 1300,
         "wires": []
     },
     {
@@ -1765,7 +1704,7 @@
         "name": "fernando.machado@fsm.pt",
         "dname": "",
         "x": 1500,
-        "y": 640,
+        "y": 1340,
         "wires": []
     },
     {
@@ -1779,7 +1718,7 @@
         "name": "patricia.diz@fsm.pt",
         "dname": "",
         "x": 1470,
-        "y": 720,
+        "y": 1420,
         "wires": []
     },
     {
@@ -1810,6 +1749,676 @@
                 "dfbabadd7eb7ca2b"
             ]
         ]
+    },
+    {
+        "id": "b341f3b47259e35e",
+        "type": "MSSQL",
+        "z": "f12c30ed7e28c309",
+        "mssqlCN": "c1ac5661abe38939",
+        "name": "Toteme",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='3813' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='3813' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='3813' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='3813' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='3813' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='3813' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='3813' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 420,
+        "y": 880,
+        "wires": [
+            [
+                "7f8c81661b5aa89a"
+            ]
+        ]
+    },
+    {
+        "id": "7f8c81661b5aa89a",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 880,
+        "wires": [
+            [
+                "17268e522e7a1130"
+            ]
+        ]
+    },
+    {
+        "id": "17268e522e7a1130",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "Create Template Toteme",
+        "func": "function vendas(values){\n    var htmlValues=\"\"\n    const d = new Date();\n    let year = d.getFullYear();\n    var a2022=0\n    var a2021=0\n    var a2020=0\n    var a2019=0\n    \n    values.map(i=>{\n        if(i.ano===year){\n            a2022 = i.Soma\n        }\n        else if(i.ano===year-1){\n            a2021 = i.Soma\n        }\n        else if(i.ano===year-2){\n            a2020 = i.Soma\n        }\n        else if(i.ano===year-3){\n            a2019 = i.Soma\n        }\n    })\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2022)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2021)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2020)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2019)+\"</td>\"\n    return htmlValues;\n}\n\nfunction vendasAno(values){\n    var htmlValues=\"\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[1][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[2][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[3][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[4][0].Soma)+\"</td>\"\n    return htmlValues\n}\nlet euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values=msg.payload\n\nvar year_html=\"\"\nconst d = new Date();\nlet year = d.getFullYear();\nvar datestring = d.getDate()  + \"/\" + (d.getMonth()+1) + \"/\" + d.getFullYear()\nyear_html= year_html+\"<td>\"+year+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-1)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-2)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-3)+\"</td>\"\n\n\nvar vendasTotais=vendas(values[0])\nvar vendasData=vendasAno(values)\nvar vendasMes=vendas(values[5])\nvar vendasMesData=vendas(values[6])\n\nvar html_aux =\"<h4>ACUMULADOS DE VENDAS - TOTEME AB</h4>\"+\n\"<table>\"+\n  \"<tr>\"+\n    \"<th>Total Vendas</th>\"+\n    year_html+\n  \"</tr>\"+\n  \"<tr>\"+\n    \"<td>Total Ano</td>\"+\n    vendasTotais+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/01 a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/\"+(d.getMonth()+1)+\" a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasMesData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total Mês</td>\"+\n    vendasMes+\n    \"</tr>\"+\n\"</table>\"\nvar html_global=global.get('html')\nhtml_aux=html_global+html_aux\nglobal.set('html',html_aux)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 880,
+        "wires": [
+            [
+                "c7b67b7545079258"
+            ]
+        ]
+    },
+    {
+        "id": "e678e81632c5e30e",
+        "type": "MSSQL",
+        "z": "f12c30ed7e28c309",
+        "mssqlCN": "c1ac5661abe38939",
+        "name": "Aritzia",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='3725' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='3725' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='3725' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='3725' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='3725' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='3725' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='3725' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 410,
+        "y": 820,
+        "wires": [
+            [
+                "16aa8ed6059258c6"
+            ]
+        ]
+    },
+    {
+        "id": "16aa8ed6059258c6",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 820,
+        "wires": [
+            [
+                "bcd5ef234e4d520c"
+            ]
+        ]
+    },
+    {
+        "id": "bcd5ef234e4d520c",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "Create Template Aritzia",
+        "func": "function vendas(values){\n    var htmlValues=\"\"\n    const d = new Date();\n    let year = d.getFullYear();\n    var a2022=0\n    var a2021=0\n    var a2020=0\n    var a2019=0\n    \n    values.map(i=>{\n        if(i.ano===year){\n            a2022 = i.Soma\n        }\n        else if(i.ano===year-1){\n            a2021 = i.Soma\n        }\n        else if(i.ano===year-2){\n            a2020 = i.Soma\n        }\n        else if(i.ano===year-3){\n            a2019 = i.Soma\n        }\n    })\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2022)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2021)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2020)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2019)+\"</td>\"\n    return htmlValues;\n}\n\nfunction vendasAno(values){\n    var htmlValues=\"\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[1][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[2][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[3][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[4][0].Soma)+\"</td>\"\n    return htmlValues\n}\nlet euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values=msg.payload\n\nvar year_html=\"\"\nconst d = new Date();\nlet year = d.getFullYear();\nvar datestring = d.getDate()  + \"/\" + (d.getMonth()+1) + \"/\" + d.getFullYear()\nyear_html= year_html+\"<td>\"+year+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-1)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-2)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-3)+\"</td>\"\n\n\nvar vendasTotais=vendas(values[0])\nvar vendasData=vendasAno(values)\nvar vendasMes=vendas(values[5])\nvar vendasMesData=vendas(values[6])\n\nvar html_aux =\"<h4>ACUMULADOS DE VENDAS - ARITZIA</h4>\"+\n\"<table>\"+\n  \"<tr>\"+\n    \"<th>Total Vendas</th>\"+\n    year_html+\n  \"</tr>\"+\n  \"<tr>\"+\n    \"<td>Total Ano</td>\"+\n    vendasTotais+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/01 a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/\"+(d.getMonth()+1)+\" a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasMesData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total Mês</td>\"+\n    vendasMes+\n    \"</tr>\"+\n\"</table>\"\nvar html_global=global.get('html')\nhtml_aux=html_global+html_aux\nglobal.set('html',html_aux)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 820,
+        "wires": [
+            [
+                "b341f3b47259e35e"
+            ]
+        ]
+    },
+    {
+        "id": "c7b67b7545079258",
+        "type": "MSSQL",
+        "z": "f12c30ed7e28c309",
+        "mssqlCN": "c1ac5661abe38939",
+        "name": "ASPHALTE",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='3925' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='3925' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='3925' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='3925' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='3925' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='3925' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='3925' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 430,
+        "y": 940,
+        "wires": [
+            [
+                "b25a0e97231a73cf"
+            ]
+        ]
+    },
+    {
+        "id": "b25a0e97231a73cf",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 940,
+        "wires": [
+            [
+                "d118fa2d3b0a75b8"
+            ]
+        ]
+    },
+    {
+        "id": "d118fa2d3b0a75b8",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "Create Template ASPHALTE",
+        "func": "function vendas(values){\n    var htmlValues=\"\"\n    const d = new Date();\n    let year = d.getFullYear();\n    var a2022=0\n    var a2021=0\n    var a2020=0\n    var a2019=0\n    \n    values.map(i=>{\n        if(i.ano===year){\n            a2022 = i.Soma\n        }\n        else if(i.ano===year-1){\n            a2021 = i.Soma\n        }\n        else if(i.ano===year-2){\n            a2020 = i.Soma\n        }\n        else if(i.ano===year-3){\n            a2019 = i.Soma\n        }\n    })\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2022)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2021)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2020)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2019)+\"</td>\"\n    return htmlValues;\n}\n\nfunction vendasAno(values){\n    var htmlValues=\"\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[1][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[2][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[3][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[4][0].Soma)+\"</td>\"\n    return htmlValues\n}\nlet euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values=msg.payload\n\nvar year_html=\"\"\nconst d = new Date();\nlet year = d.getFullYear();\nvar datestring = d.getDate()  + \"/\" + (d.getMonth()+1) + \"/\" + d.getFullYear()\nyear_html= year_html+\"<td>\"+year+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-1)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-2)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-3)+\"</td>\"\n\n\nvar vendasTotais=vendas(values[0])\nvar vendasData=vendasAno(values)\nvar vendasMes=vendas(values[5])\nvar vendasMesData=vendas(values[6])\n\nvar html_aux =\"<h4>ACUMULADOS DE VENDAS - ASPHALTE</h4>\"+\n\"<table>\"+\n  \"<tr>\"+\n    \"<th>Total Vendas</th>\"+\n    year_html+\n  \"</tr>\"+\n  \"<tr>\"+\n    \"<td>Total Ano</td>\"+\n    vendasTotais+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/01 a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/\"+(d.getMonth()+1)+\" a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasMesData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total Mês</td>\"+\n    vendasMes+\n    \"</tr>\"+\n\"</table>\"\nvar html_global=global.get('html')\nhtml_aux=html_global+html_aux\nglobal.set('html',html_aux)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 940,
+        "wires": [
+            [
+                "a5dea6697f7e5590"
+            ]
+        ]
+    },
+    {
+        "id": "a5dea6697f7e5590",
+        "type": "MSSQL",
+        "z": "f12c30ed7e28c309",
+        "mssqlCN": "c1ac5661abe38939",
+        "name": "HERNO SPA",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='3907' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='3907' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='3907' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='3907' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='3907' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='3907' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='3907' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 430,
+        "y": 1000,
+        "wires": [
+            [
+                "1f3fc6b5fdd5a277"
+            ]
+        ]
+    },
+    {
+        "id": "1f3fc6b5fdd5a277",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 1000,
+        "wires": [
+            [
+                "6a0eeaa8bfe10de5"
+            ]
+        ]
+    },
+    {
+        "id": "6a0eeaa8bfe10de5",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "Create Template HERNO SPA",
+        "func": "function vendas(values){\n    var htmlValues=\"\"\n    const d = new Date();\n    let year = d.getFullYear();\n    var a2022=0\n    var a2021=0\n    var a2020=0\n    var a2019=0\n    \n    values.map(i=>{\n        if(i.ano===year){\n            a2022 = i.Soma\n        }\n        else if(i.ano===year-1){\n            a2021 = i.Soma\n        }\n        else if(i.ano===year-2){\n            a2020 = i.Soma\n        }\n        else if(i.ano===year-3){\n            a2019 = i.Soma\n        }\n    })\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2022)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2021)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2020)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2019)+\"</td>\"\n    return htmlValues;\n}\n\nfunction vendasAno(values){\n    var htmlValues=\"\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[1][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[2][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[3][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[4][0].Soma)+\"</td>\"\n    return htmlValues\n}\nlet euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values=msg.payload\n\nvar year_html=\"\"\nconst d = new Date();\nlet year = d.getFullYear();\nvar datestring = d.getDate()  + \"/\" + (d.getMonth()+1) + \"/\" + d.getFullYear()\nyear_html= year_html+\"<td>\"+year+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-1)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-2)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-3)+\"</td>\"\n\n\nvar vendasTotais=vendas(values[0])\nvar vendasData=vendasAno(values)\nvar vendasMes=vendas(values[5])\nvar vendasMesData=vendas(values[6])\n\nvar html_aux =\"<h4>ACUMULADOS DE VENDAS - HERNO SPA</h4>\"+\n\"<table>\"+\n  \"<tr>\"+\n    \"<th>Total Vendas</th>\"+\n    year_html+\n  \"</tr>\"+\n  \"<tr>\"+\n    \"<td>Total Ano</td>\"+\n    vendasTotais+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/01 a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/\"+(d.getMonth()+1)+\" a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasMesData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total Mês</td>\"+\n    vendasMes+\n    \"</tr>\"+\n\"</table>\"\nvar html_global=global.get('html')\nhtml_aux=html_global+html_aux\nglobal.set('html',html_aux)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 1000,
+        "wires": [
+            [
+                "fbce135df5eab0fa"
+            ]
+        ]
+    },
+    {
+        "id": "ec4a6d98138959a5",
+        "type": "MSSQL",
+        "z": "f12c30ed7e28c309",
+        "mssqlCN": "c1ac5661abe38939",
+        "name": "DUNNES STORE",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='3133' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='3133' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='3133' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='3133' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='3133' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='3133' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='3133' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 430,
+        "y": 1380,
+        "wires": [
+            [
+                "b440774e321b1752"
+            ]
+        ]
+    },
+    {
+        "id": "b440774e321b1752",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 1380,
+        "wires": [
+            [
+                "399fb7ccc5945e7b"
+            ]
+        ]
+    },
+    {
+        "id": "399fb7ccc5945e7b",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "Create Template DUNNES STORES",
+        "func": "function vendas(values) {\n    var htmlValues = \"\"\n    const d = new Date();\n    let year = d.getFullYear();\n    var a2022 = 0\n    var a2021 = 0\n    var a2020 = 0\n    var a2019 = 0\n\n    values.map(i => {\n        if (i.ano === year) {\n            a2022 = i.Soma\n        }\n        else if (i.ano === year - 1) {\n            a2021 = i.Soma\n        }\n        else if (i.ano === year - 2) {\n            a2020 = i.Soma\n        }\n        else if (i.ano === year - 3) {\n            a2019 = i.Soma\n        }\n    })\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(a2022) + \"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(a2021) + \"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(a2020) + \"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(a2019) + \"</td>\"\n    return htmlValues;\n}\n\nfunction vendasAno(values) {\n    var htmlValues = \"\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[1][0].Soma) + \"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[2][0].Soma) + \"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[3][0].Soma) + \"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[4][0].Soma) + \"</td>\"\n    return htmlValues\n}\nlet euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values = msg.payload\n\nvar year_html = \"\"\nconst d = new Date();\nlet year = d.getFullYear();\nvar datestring = d.getDate() + \"/\" + (d.getMonth() + 1) + \"/\" + d.getFullYear()\nyear_html = year_html + \"<td>\" + year + \"</td>\"\nyear_html = year_html + \"<td>\" + (year - 1) + \"</td>\"\nyear_html = year_html + \"<td>\" + (year - 2) + \"</td>\"\nyear_html = year_html + \"<td>\" + (year - 3) + \"</td>\"\n\n\nvar vendasTotais = vendas(values[0])\nvar vendasData = vendasAno(values)\nvar vendasMes = vendas(values[5])\nvar vendasMesData = vendas(values[6])\n\nvar html_aux = \"<h4>ACUMULADOS DE VENDAS - DUNNES STORES</h4>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Total Vendas</th>\" +\n    year_html +\n    \"</tr>\" +\n    \"<tr>\" +\n    \"<td>Total Ano</td>\" +\n    vendasTotais +\n    \"</tr>\" +\n    \"<tr>\" +\n    \"<td>Total de 01/01 a \" + d.getDate() + \"/\" + (d.getMonth() + 1) + \"</td>\" +\n    vendasData +\n    \"</tr>\" +\n    \"<tr>\" +\n    \"<td>Total de 01/\" + (d.getMonth() + 1) + \" a \" + d.getDate() + \"/\" + (d.getMonth() + 1) + \"</td>\" +\n    vendasMesData +\n    \"</tr>\" +\n    \"<tr>\" +\n    \"<td>Total Mês</td>\" +\n    vendasMes +\n    \"</tr>\" +\n    \"</table><div></div></body>\"\nvar html_global = global.get('html')\nhtml_aux = html_global + html_aux\nglobal.set('html', html_aux)\nmsg.payload = global.get('html')\nmsg.from = 'ricardo.ferreira@fsm.pt'\nmsg.topic = 'Vendas FSM'\nmsg.plaintext = 'text/html'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 1380,
+        "wires": [
+            [
+                "aef633fab25d834d",
+                "38eb52b28fef9bf1",
+                "af1f6c0fcc1b7712",
+                "9c37376390873acb",
+                "bb1f5d1b143d0994",
+                "05010a896b064ab2",
+                "e532507dc6d5cf90"
+            ]
+        ]
+    },
+    {
+        "id": "fbce135df5eab0fa",
+        "type": "MSSQL",
+        "z": "f12c30ed7e28c309",
+        "mssqlCN": "c1ac5661abe38939",
+        "name": "LAMAREL",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='3648' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='3648' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='3648' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='3648' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='3648' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='3648' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='3648' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 430,
+        "y": 1060,
+        "wires": [
+            [
+                "7c9c9183c2976b97"
+            ]
+        ]
+    },
+    {
+        "id": "7c9c9183c2976b97",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 1060,
+        "wires": [
+            [
+                "54ab84128aa48f0b"
+            ]
+        ]
+    },
+    {
+        "id": "54ab84128aa48f0b",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "Create Template LAMAREL",
+        "func": "function vendas(values){\n    var htmlValues=\"\"\n    const d = new Date();\n    let year = d.getFullYear();\n    var a2022=0\n    var a2021=0\n    var a2020=0\n    var a2019=0\n    \n    values.map(i=>{\n        if(i.ano===year){\n            a2022 = i.Soma\n        }\n        else if(i.ano===year-1){\n            a2021 = i.Soma\n        }\n        else if(i.ano===year-2){\n            a2020 = i.Soma\n        }\n        else if(i.ano===year-3){\n            a2019 = i.Soma\n        }\n    })\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2022)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2021)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2020)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2019)+\"</td>\"\n    return htmlValues;\n}\n\nfunction vendasAno(values){\n    var htmlValues=\"\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[1][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[2][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[3][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[4][0].Soma)+\"</td>\"\n    return htmlValues\n}\nlet euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values=msg.payload\n\nvar year_html=\"\"\nconst d = new Date();\nlet year = d.getFullYear();\nvar datestring = d.getDate()  + \"/\" + (d.getMonth()+1) + \"/\" + d.getFullYear()\nyear_html= year_html+\"<td>\"+year+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-1)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-2)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-3)+\"</td>\"\n\n\nvar vendasTotais=vendas(values[0])\nvar vendasData=vendasAno(values)\nvar vendasMes=vendas(values[5])\nvar vendasMesData=vendas(values[6])\n\nvar html_aux =\"<h4>ACUMULADOS DE VENDAS - LAMAREL</h4>\"+\n\"<table>\"+\n  \"<tr>\"+\n    \"<th>Total Vendas</th>\"+\n    year_html+\n  \"</tr>\"+\n  \"<tr>\"+\n    \"<td>Total Ano</td>\"+\n    vendasTotais+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/01 a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/\"+(d.getMonth()+1)+\" a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasMesData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total Mês</td>\"+\n    vendasMes+\n    \"</tr>\"+\n\"</table>\"\nvar html_global=global.get('html')\nhtml_aux=html_global+html_aux\nglobal.set('html',html_aux)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 1060,
+        "wires": [
+            [
+                "0084bc7e2413b1c4"
+            ]
+        ]
+    },
+    {
+        "id": "0084bc7e2413b1c4",
+        "type": "MSSQL",
+        "z": "f12c30ed7e28c309",
+        "mssqlCN": "c1ac5661abe38939",
+        "name": "ABSOLUTTARGET",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='3877' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='3877' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='3877' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='3877' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='3877' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='3877' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='3877' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 430,
+        "y": 1120,
+        "wires": [
+            [
+                "612c561c9aa4712d"
+            ]
+        ]
+    },
+    {
+        "id": "612c561c9aa4712d",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 1120,
+        "wires": [
+            [
+                "2c4820413bd22563"
+            ]
+        ]
+    },
+    {
+        "id": "2c4820413bd22563",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "Create Template ABSOLUTTARGET",
+        "func": "function vendas(values){\n    var htmlValues=\"\"\n    const d = new Date();\n    let year = d.getFullYear();\n    var a2022=0\n    var a2021=0\n    var a2020=0\n    var a2019=0\n    \n    values.map(i=>{\n        if(i.ano===year){\n            a2022 = i.Soma\n        }\n        else if(i.ano===year-1){\n            a2021 = i.Soma\n        }\n        else if(i.ano===year-2){\n            a2020 = i.Soma\n        }\n        else if(i.ano===year-3){\n            a2019 = i.Soma\n        }\n    })\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2022)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2021)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2020)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2019)+\"</td>\"\n    return htmlValues;\n}\n\nfunction vendasAno(values){\n    var htmlValues=\"\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[1][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[2][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[3][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[4][0].Soma)+\"</td>\"\n    return htmlValues\n}\nlet euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values=msg.payload\n\nvar year_html=\"\"\nconst d = new Date();\nlet year = d.getFullYear();\nvar datestring = d.getDate()  + \"/\" + (d.getMonth()+1) + \"/\" + d.getFullYear()\nyear_html= year_html+\"<td>\"+year+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-1)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-2)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-3)+\"</td>\"\n\n\nvar vendasTotais=vendas(values[0])\nvar vendasData=vendasAno(values)\nvar vendasMes=vendas(values[5])\nvar vendasMesData=vendas(values[6])\n\nvar html_aux =\"<h4>ACUMULADOS DE VENDAS - ABSOLUTTARGET</h4>\"+\n\"<table>\"+\n  \"<tr>\"+\n    \"<th>Total Vendas</th>\"+\n    year_html+\n  \"</tr>\"+\n  \"<tr>\"+\n    \"<td>Total Ano</td>\"+\n    vendasTotais+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/01 a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/\"+(d.getMonth()+1)+\" a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasMesData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total Mês</td>\"+\n    vendasMes+\n    \"</tr>\"+\n\"</table>\"\nvar html_global=global.get('html')\nhtml_aux=html_global+html_aux\nglobal.set('html',html_aux)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 1120,
+        "wires": [
+            [
+                "ae307f776de9504b"
+            ]
+        ]
+    },
+    {
+        "id": "ae307f776de9504b",
+        "type": "MSSQL",
+        "z": "f12c30ed7e28c309",
+        "mssqlCN": "c1ac5661abe38939",
+        "name": "MAX MARA",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='2' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='2' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='2' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='2' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='2' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='2' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='2' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 410,
+        "y": 1180,
+        "wires": [
+            [
+                "5e75c7ed34a3da4f"
+            ]
+        ]
+    },
+    {
+        "id": "5e75c7ed34a3da4f",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 1180,
+        "wires": [
+            [
+                "7a6d975a45275e42"
+            ]
+        ]
+    },
+    {
+        "id": "7a6d975a45275e42",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "Create Template MAX MARA",
+        "func": "function vendas(values){\n    var htmlValues=\"\"\n    const d = new Date();\n    let year = d.getFullYear();\n    var a2022=0\n    var a2021=0\n    var a2020=0\n    var a2019=0\n    \n    values.map(i=>{\n        if(i.ano===year){\n            a2022 = i.Soma\n        }\n        else if(i.ano===year-1){\n            a2021 = i.Soma\n        }\n        else if(i.ano===year-2){\n            a2020 = i.Soma\n        }\n        else if(i.ano===year-3){\n            a2019 = i.Soma\n        }\n    })\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2022)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2021)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2020)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2019)+\"</td>\"\n    return htmlValues;\n}\n\nfunction vendasAno(values){\n    var htmlValues=\"\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[1][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[2][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[3][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[4][0].Soma)+\"</td>\"\n    return htmlValues\n}\nlet euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values=msg.payload\n\nvar year_html=\"\"\nconst d = new Date();\nlet year = d.getFullYear();\nvar datestring = d.getDate()  + \"/\" + (d.getMonth()+1) + \"/\" + d.getFullYear()\nyear_html= year_html+\"<td>\"+year+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-1)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-2)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-3)+\"</td>\"\n\n\nvar vendasTotais=vendas(values[0])\nvar vendasData=vendasAno(values)\nvar vendasMes=vendas(values[5])\nvar vendasMesData=vendas(values[6])\n\nvar html_aux =\"<h4>ACUMULADOS DE VENDAS - MAX MARA</h4>\"+\n\"<table>\"+\n  \"<tr>\"+\n    \"<th>Total Vendas</th>\"+\n    year_html+\n  \"</tr>\"+\n  \"<tr>\"+\n    \"<td>Total Ano</td>\"+\n    vendasTotais+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/01 a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/\"+(d.getMonth()+1)+\" a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasMesData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total Mês</td>\"+\n    vendasMes+\n    \"</tr>\"+\n\"</table>\"\nvar html_global=global.get('html')\nhtml_aux=html_global+html_aux\nglobal.set('html',html_aux)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 1180,
+        "wires": [
+            [
+                "7a416a0206f3312b"
+            ]
+        ]
+    },
+    {
+        "id": "7a416a0206f3312b",
+        "type": "MSSQL",
+        "z": "f12c30ed7e28c309",
+        "mssqlCN": "c1ac5661abe38939",
+        "name": "THE KOOPLES",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='2444' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='2444' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='2444' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='2444' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='2444' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='2444' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='2444' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 420,
+        "y": 1240,
+        "wires": [
+            [
+                "f23c6fdfbd1a5d91"
+            ]
+        ]
+    },
+    {
+        "id": "f23c6fdfbd1a5d91",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 1240,
+        "wires": [
+            [
+                "4fc616ec0bef7b2b"
+            ]
+        ]
+    },
+    {
+        "id": "4fc616ec0bef7b2b",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "Create Template THE KOOPLES",
+        "func": "function vendas(values){\n    var htmlValues=\"\"\n    const d = new Date();\n    let year = d.getFullYear();\n    var a2022=0\n    var a2021=0\n    var a2020=0\n    var a2019=0\n    \n    values.map(i=>{\n        if(i.ano===year){\n            a2022 = i.Soma\n        }\n        else if(i.ano===year-1){\n            a2021 = i.Soma\n        }\n        else if(i.ano===year-2){\n            a2020 = i.Soma\n        }\n        else if(i.ano===year-3){\n            a2019 = i.Soma\n        }\n    })\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2022)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2021)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2020)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2019)+\"</td>\"\n    return htmlValues;\n}\n\nfunction vendasAno(values){\n    var htmlValues=\"\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[1][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[2][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[3][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[4][0].Soma)+\"</td>\"\n    return htmlValues\n}\nlet euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values=msg.payload\n\nvar year_html=\"\"\nconst d = new Date();\nlet year = d.getFullYear();\nvar datestring = d.getDate()  + \"/\" + (d.getMonth()+1) + \"/\" + d.getFullYear()\nyear_html= year_html+\"<td>\"+year+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-1)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-2)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-3)+\"</td>\"\n\n\nvar vendasTotais=vendas(values[0])\nvar vendasData=vendasAno(values)\nvar vendasMes=vendas(values[5])\nvar vendasMesData=vendas(values[6])\n\nvar html_aux =\"<h4>ACUMULADOS DE VENDAS - THE KOOPLES</h4>\"+\n\"<table>\"+\n  \"<tr>\"+\n    \"<th>Total Vendas</th>\"+\n    year_html+\n  \"</tr>\"+\n  \"<tr>\"+\n    \"<td>Total Ano</td>\"+\n    vendasTotais+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/01 a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/\"+(d.getMonth()+1)+\" a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasMesData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total Mês</td>\"+\n    vendasMes+\n    \"</tr>\"+\n\"</table>\"\nvar html_global=global.get('html')\nhtml_aux=html_global+html_aux\nglobal.set('html',html_aux)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 1240,
+        "wires": [
+            [
+                "738dc485542770ce"
+            ]
+        ]
+    },
+    {
+        "id": "738dc485542770ce",
+        "type": "MSSQL",
+        "z": "f12c30ed7e28c309",
+        "mssqlCN": "c1ac5661abe38939",
+        "name": "100% CAPRI",
+        "outField": "payload",
+        "returnType": "1",
+        "throwErrors": "0",
+        "query": "Select CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(m.DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)>=YEAR(GETDATE())-3\nand p.PartnerID='3890' and i.ItemID=m.ItemID\nGroup by YEAR(m.DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and YEAR(m.DataDoc)=YEAR(GETDATE())\nand p.PartnerID='3890' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-1,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-1\nand p.PartnerID='3890' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-2,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-2\nand p.PartnerID='3890' and i.ItemID=m.ItemID\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and m.DataDoc<= DATEADD(year,-3,GETDATE()) and YEAR(m.DataDoc)=YEAR(GETDATE())-3\nand p.PartnerID='3890' and i.ItemID=m.ItemID\n\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DATADOC) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE())\nand p.PartnerID='3890' and i.ItemID=m.ItemID\nGroup by YEAR(DATADOC)\nOrder by ano DESC\n\nSelect CAST(SUM(m.TotValue) as decimal(18,0)) as Soma, YEAR(DataDoc) ano\nFrom DocMovs m, Partners p, ItemMaster i\nWhere m.AreaCod='Vendas' and p.PartnerID=m.PartnerID and p.PartnerType='C' and MONTH(m.DataDoc)=MONTH (GETDATE()) and DAY(m.DataDoc)<=DAY (GETDATE())\nand p.PartnerID='3890' and i.ItemID=m.ItemID\nGroup by YEAR(DataDoc)\nOrder by ano DESC",
+        "modeOpt": "queryMode",
+        "modeOptType": "query",
+        "queryOpt": "payload",
+        "queryOptType": "editor",
+        "paramsOpt": "queryParams",
+        "paramsOptType": "none",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 410,
+        "y": 1300,
+        "wires": [
+            [
+                "b2a611448a5c2ab7"
+            ]
+        ]
+    },
+    {
+        "id": "b2a611448a5c2ab7",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "",
+        "func": "msg.payload=msg.payload.recordsets\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 1300,
+        "wires": [
+            [
+                "5422988052b8411b"
+            ]
+        ]
+    },
+    {
+        "id": "5422988052b8411b",
+        "type": "function",
+        "z": "f12c30ed7e28c309",
+        "name": "Create Template 100% CAPRI",
+        "func": "function vendas(values){\n    var htmlValues=\"\"\n    const d = new Date();\n    let year = d.getFullYear();\n    var a2022=0\n    var a2021=0\n    var a2020=0\n    var a2019=0\n    \n    values.map(i=>{\n        if(i.ano===year){\n            a2022 = i.Soma\n        }\n        else if(i.ano===year-1){\n            a2021 = i.Soma\n        }\n        else if(i.ano===year-2){\n            a2020 = i.Soma\n        }\n        else if(i.ano===year-3){\n            a2019 = i.Soma\n        }\n    })\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2022)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2021)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2020)+\"</td>\"\n    htmlValues= htmlValues+\"<td>\"+euroGerman.format(a2019)+\"</td>\"\n    return htmlValues;\n}\n\nfunction vendasAno(values){\n    var htmlValues=\"\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[1][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[2][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[3][0].Soma)+\"</td>\"\n    htmlValues = htmlValues + \"<td>\" + euroGerman.format(values[4][0].Soma)+\"</td>\"\n    return htmlValues\n}\nlet euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values=msg.payload\n\nvar year_html=\"\"\nconst d = new Date();\nlet year = d.getFullYear();\nvar datestring = d.getDate()  + \"/\" + (d.getMonth()+1) + \"/\" + d.getFullYear()\nyear_html= year_html+\"<td>\"+year+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-1)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-2)+\"</td>\"\nyear_html= year_html+\"<td>\"+(year-3)+\"</td>\"\n\n\nvar vendasTotais=vendas(values[0])\nvar vendasData=vendasAno(values)\nvar vendasMes=vendas(values[5])\nvar vendasMesData=vendas(values[6])\n\nvar html_aux =\"<h4>ACUMULADOS DE VENDAS - 100% CAPRI</h4>\"+\n\"<table>\"+\n  \"<tr>\"+\n    \"<th>Total Vendas</th>\"+\n    year_html+\n  \"</tr>\"+\n  \"<tr>\"+\n    \"<td>Total Ano</td>\"+\n    vendasTotais+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/01 a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total de 01/\"+(d.getMonth()+1)+\" a \"+d.getDate()+\"/\"+(d.getMonth()+1)+\"</td>\"+\n    vendasMesData+\n    \"</tr>\"+\n     \"<tr>\"+\n    \"<td>Total Mês</td>\"+\n    vendasMes+\n    \"</tr>\"+\n\"</table>\"\nvar html_global=global.get('html')\nhtml_aux=html_global+html_aux\nglobal.set('html',html_aux)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 1300,
+        "wires": [
+            [
+                "ec4a6d98138959a5"
+            ]
+        ]
+    },
+    {
+        "id": "e532507dc6d5cf90",
+        "type": "e-mail",
+        "z": "f12c30ed7e28c309",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "rute.teixeira@fsm.pt",
+        "dname": "",
+        "x": 1480,
+        "y": 1140,
+        "wires": []
     },
     {
         "id": "5c9329811a558a30",
@@ -1891,7 +2500,7 @@
         "type": "function",
         "z": "2cc8840c3c65c436",
         "name": "Create Template",
-        "func": "let euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nlet euroGermanNumber = new Intl.NumberFormat('de-DE', {\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values = msg.payload[0]\nvar valuesMarrocos = msg.payload[1]\nvar valuesTotal = msg.payload[2]\nvar valuesMarrocosTotal = msg.payload[3]\n\nvar html_aux = \"\"\nvar html_aux_marrocos = \"\"\n\nvar date = new Date()\nvar dateNow = date.getDate() + \"/\" + (date.getMonth() + 1) + \"/\" + date.getFullYear();\nvar first = date.getDate() - date.getDay(); // First day is the day of the month - the day of the week\n\nvar firstday = new Date(date.setDate(first));\nvar lastday = new Date(firstday).addDays(6);\nvar firstDayFormat = firstday.getDate() + \"/\" + (firstday.getMonth() + 1) + \"/\" + firstday.getFullYear()\nvar lastDayFormat = lastday.getDate() + \"/\" + (lastday.getMonth() + 1) + \"/\" + lastday.getFullYear()\n\nhtml_aux = html_aux + \"<tr>\"\nhtml_aux = html_aux + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + (valuesTotal.length > 0 ? valuesTotal[0].QtyDoc : 0) + \"</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGerman.format((valuesTotal.length > 0 ? valuesTotal[0].Total : 0)) + \"€</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_marrocos = html_aux_marrocos + \"<tr>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>\" + (valuesMarrocosTotal.length>0?valuesMarrocosTotal[0].QtyDoc:0)+ \"</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>\" + euroGerman.format((valuesMarrocosTotal.length > 0 ? valuesMarrocosTotal[0].Total : 0)) + \"€</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"</tr>\"\n\nvalues.map(i => {\n    html_aux = html_aux + \"<tr>\"\n    html_aux = html_aux + \"<td>\" + i.Cliente + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.Fabrica + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.ItemID + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.CategoryDescr + \" \"+ i.SubCategoryDescr+\"</td>\"\n    html_aux = html_aux + \"<td>\" + i.QtyDoc + \"</td>\"\n    html_aux = html_aux + \"<td>\" + euroGerman.format(i.UnitPrice) + \"€</td>\"\n    html_aux = html_aux + \"<td>\" + euroGerman.format(i.Total) + \"€</td>\"\n    html_aux = html_aux + \"<td>\" + new Date(i.DataDoc).getDate() + \"/\" + (new Date(i.DataDoc).getMonth() + 1) + \"/\" + new Date(i.DataDoc).getFullYear()+ \"</td>\"\n    html_aux = html_aux + \"</tr>\"\n})\nvar html = \"<!DOCTYPE html>\" +\n    \"<html>\" +\n    \"<head>\" +\n    \"<style>\" +\n    \"table {\" +\n    \"font-family: arial, sans-serif;\" +\n    \"border-collapse: collapse;\" +\n    \"width: 100%;\" +\n    \"}\" +\n\n    \"td{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: right;\" +\n    \"font-size: 10px;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"th{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: left;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"tr:nth-child(even) {\" +\n    \"background-color: #dddddd;\" +\n    \"}\" +\n    \"</style>\" +\n    \"</head>\" +\n    \"<body>\" +\n    \"<h4> Bom Dia.</h4>\" +\n    \"<div></div>\" +\n    \"<h4> PLANO ENTREGAS PORTUGAL DE \" + firstDayFormat + \" A \"+lastDayFormat+\"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Fábrica</th>\" +\n    \"<th>Modelo</th>\" +\n    \"<th>Categoria</th>\" +\n    \"<th>Quantidade</th>\" +\n    \"<th>Preço Unit €</th>\" +\n    \"<th>Total €</th>\" +\n    \"<th>Data</th>\" +\n    \"</tr>\"\nhtml = html + html_aux\nhtml=html+\"</table> <br></br>\"+\n    \"<h4> PLANO ENTREGAS MARROCOS DE \" + firstDayFormat + \" A \" + lastDayFormat + \"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Fábrica</th>\" +\n    \"<th>Modelo</th>\" +\n    \"<th>Categoria</th>\" +\n    \"<th>Quantidade</th>\" +\n    \"<th>Preço Unit €</th>\" +\n    \"<th>Total €</th>\" +\n    \"<th>Data</th>\" +\n    \"</tr>\"\nhtml=html+html_aux_marrocos\nhtml = html + \"</table><br></br> </body> </html>\"\n\nmsg.payload = html\nmsg.plaintext = 'text:html'\nmsg.topic = 'PLANO ENTREGAS FSM DE ' + firstDayFormat + ' A '+lastDayFormat+'.';\nmsg.from = 'ricardo.ferreira@fsm.pt'\nreturn msg;",
+        "func": "let euroGerman = new Intl.NumberFormat('de-DE', {\n    style: 'currency',\n    currency: 'EUR',\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nlet euroGermanNumber = new Intl.NumberFormat('de-DE', {\n    minimumFractionDigits: 0,\n    maximumFractionDigits: 0,\n})\nvar values = msg.payload[0]\nvar valuesMarrocos = msg.payload[1]\nvar valuesTotal = msg.payload[2]\nvar valuesMarrocosTotal = msg.payload[3]\n\nvar html_aux = \"\"\nvar html_aux_marrocos = \"\"\n\nvar date = new Date()\nvar dateNow = date.getDate() + \"/\" + (date.getMonth() + 1) + \"/\" + date.getFullYear();\nvar first = date.getDate() - date.getDay(); // First day is the day of the month - the day of the week\n\nvar firstday = new Date(date.setDate(first));\nvar lastday = new Date(firstday).addDays(6);\nvar firstDayFormat = firstday.getDate() + \"/\" + (firstday.getMonth() + 1) + \"/\" + firstday.getFullYear()\nvar lastDayFormat = lastday.getDate() + \"/\" + (lastday.getMonth() + 1) + \"/\" + lastday.getFullYear()\n\nhtml_aux = html_aux + \"<tr>\"\nhtml_aux = html_aux + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + (valuesTotal.length > 0 ? valuesTotal[0].QtyDoc : 0) + \"</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"<td><h4>\" + euroGerman.format((valuesTotal.length > 0 ? valuesTotal[0].Total : 0)) + \"€</h4></td>\"\nhtml_aux = html_aux + \"<td></td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_marrocos = html_aux_marrocos + \"<tr>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>\" + (valuesMarrocosTotal.length>0?valuesMarrocosTotal[0].QtyDoc:0)+ \"</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td><h4>\" + euroGerman.format((valuesMarrocosTotal.length > 0 ? valuesMarrocosTotal[0].Total : 0)) + \"€</h4></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"<td></td>\"\nhtml_aux_marrocos = html_aux_marrocos + \"</tr>\"\n\nvalues.map(i => {\n    html_aux = html_aux + \"<tr>\"\n    html_aux = html_aux + \"<td>\" + i.Cliente + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.Fabrica + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.ItemID + \"</td>\"\n    html_aux = html_aux + \"<td>\" + i.CategoryDescr + \" \"+ i.SubCategoryDescr+\"</td>\"\n    html_aux = html_aux + \"<td>\" + i.QtyDoc + \"</td>\"\n    html_aux = html_aux + \"<td>\" + euroGerman.format(i.UnitPrice) + \"€</td>\"\n    html_aux = html_aux + \"<td>\" + euroGerman.format(i.Total) + \"€</td>\"\n    html_aux = html_aux + \"<td>\" + new Date(i.DataDoc).getDate() + \"/\" + (new Date(i.DataDoc).getMonth() + 1) + \"/\" + new Date(i.DataDoc).getFullYear()+ \"</td>\"\n    html_aux = html_aux + \"</tr>\"\n})\n\nvaluesMarrocos.map(i => {\n    html_aux_marrocos = html_aux_marrocos + \"<tr>\"\n    html_aux_marrocos = html_aux_marrocos + \"<td>\" + i.Cliente + \"</td>\"\n    html_aux_marrocos = html_aux_marrocos + \"<td>\" + i.Fabrica + \"</td>\"\n    html_aux_marrocos = html_aux_marrocos + \"<td>\" + i.ItemID + \"</td>\"\n    html_aux_marrocos = html_aux_marrocos + \"<td>\" + i.CategoryDescr + \" \" + i.SubCategoryDescr + \"</td>\"\n    html_aux_marrocos = html_aux_marrocos + \"<td>\" + i.QtyDoc + \"</td>\"\n    html_aux_marrocos = html_aux_marrocos + \"<td>\" + euroGerman.format(i.UnitPrice) + \"€</td>\"\n    html_aux_marrocos = html_aux_marrocos + \"<td>\" + euroGerman.format(i.Total) + \"€</td>\"\n    html_aux_marrocos = html_aux_marrocos + \"<td>\" + new Date(i.DataDoc).getDate() + \"/\" + (new Date(i.DataDoc).getMonth() + 1) + \"/\" + new Date(i.DataDoc).getFullYear() + \"</td>\"\n    html_aux_marrocos = html_aux_marrocos + \"</tr>\"\n})\nvar html = \"<!DOCTYPE html>\" +\n    \"<html>\" +\n    \"<head>\" +\n    \"<style>\" +\n    \"table {\" +\n    \"font-family: arial, sans-serif;\" +\n    \"border-collapse: collapse;\" +\n    \"width: 100%;\" +\n    \"}\" +\n\n    \"td{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: right;\" +\n    \"font-size: 10px;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"th{\" +\n    \"border: 1px solid #dddddd;\" +\n    \"text-align: left;\" +\n    \"padding: 8px;\" +\n    \"}\" +\n    \"tr:nth-child(even) {\" +\n    \"background-color: #dddddd;\" +\n    \"}\" +\n    \"</style>\" +\n    \"</head>\" +\n    \"<body>\" +\n    \"<h4> Bom Dia.</h4>\" +\n    \"<div></div>\" +\n    \"<h4> PLANO ENTREGAS PORTUGAL DE \" + firstDayFormat + \" A \"+lastDayFormat+\"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Fábrica</th>\" +\n    \"<th>Modelo</th>\" +\n    \"<th>Categoria</th>\" +\n    \"<th>Quantidade</th>\" +\n    \"<th>Preço Unit €</th>\" +\n    \"<th>Total €</th>\" +\n    \"<th>Data</th>\" +\n    \"</tr>\"\nhtml = html + html_aux\nhtml=html+\"</table> <br></br>\"+\n    \"<h4> PLANO ENTREGAS MARROCOS DE \" + firstDayFormat + \" A \" + lastDayFormat + \"</h4>\" +\n    \"<div></div>\" +\n    \"<div></div>\" +\n    \"<table>\" +\n    \"<tr>\" +\n    \"<th>Cliente</th>\" +\n    \"<th>Fábrica</th>\" +\n    \"<th>Modelo</th>\" +\n    \"<th>Categoria</th>\" +\n    \"<th>Quantidade</th>\" +\n    \"<th>Preço Unit €</th>\" +\n    \"<th>Total €</th>\" +\n    \"<th>Data</th>\" +\n    \"</tr>\"\nhtml=html+html_aux_marrocos\nhtml = html + \"</table><br></br> </body> </html>\"\n\nmsg.payload = html\nmsg.plaintext = 'text:html'\nmsg.topic = 'PLANO ENTREGAS FSM DE ' + firstDayFormat + ' A '+lastDayFormat+'.';\nmsg.from = 'ricardo.ferreira@fsm.pt'\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1905,7 +2514,6 @@
                 "232d25aedd07c45d",
                 "c4664063f0965b50",
                 "ee1cbb80d8a128e1",
-                "efc588956475980f",
                 "f94f641d4cba356e"
             ]
         ]
@@ -2009,20 +2617,6 @@
         "statusType": "auto",
         "x": 580,
         "y": 200,
-        "wires": []
-    },
-    {
-        "id": "efc588956475980f",
-        "type": "e-mail",
-        "z": "2cc8840c3c65c436",
-        "server": "mail.sooma.com",
-        "port": "465",
-        "secure": true,
-        "tls": true,
-        "name": "afonso.duarte@fsm.pt",
-        "dname": "",
-        "x": 1200,
-        "y": 360,
         "wires": []
     },
     {
@@ -2298,7 +2892,7 @@
         "outField": "payload",
         "returnType": "1",
         "throwErrors": "0",
-        "query": "Select p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand cod.CreationDateTime>=DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()) and cod.CreationDateTime<=DATEADD(day,7,DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()))\nand imdv.VersionName not like '%intertek%'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%'\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand cod.CreationDateTime>=DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()) and cod.CreationDateTime<=DATEADD(day,7,DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()))\nand imdv.VersionName not like '%intertek%'\nOrder by Total DESC\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE())-1 and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE())-1 and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%'\nOrder by Total DESC\n\n\nSelect p.PartnerID, p.PartnerName,COUNT(*) Total\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\n        and cod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tgroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\n\tfrom ClientOrderDetails cod\n\tjoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tWhere cod.DocType='OP' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and\n    cod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0\n\tgroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\n\nSelect COUNT(*) Total\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and \n\t\tcod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\nOrder by Total DESC\n\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='OP' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and\ncod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0\nOrder by Total DESC\n\nBegin\n\nWITH sample_counts AS (\n    Select SUM(QtyOrd) total_samples\n\tfrom ClientOrderDetails cod\n\tjoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\n\tWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\n),\norder_counts AS (\n    Select COUNT(*) total_orders\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and \n\t\tcod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\n)\n-- Unindo as duas contagens\nSELECT \n    CASE \n        WHEN oc.total_orders = 0 THEN NULL\n        ELSE sc.total_samples / oc.total_orders\n    END AS racio\nFROM \n    sample_counts sc, order_counts oc\nEND\n\nBegin\nWITH sample_counts AS (\n    Select p.PartnerID, p.PartnerName, SUM(QtyOrd) total_samples\n\tfrom ClientOrderDetails cod\n\tjoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\n\tgroup by p.PartnerID, p.PartnerName\n),\norder_counts AS (\n    Select p.PartnerID, p.PartnerName,COUNT(*) total_orders\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\n        and cod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tgroup by p.PartnerID, p.PartnerName\n)\n-- Unindo as duas contagens\nSELECT\n\tsc.PartnerID,\n\tsc.PartnerName,\n    sc.total_samples amostras,\n    oc.total_orders encomendas,\n    CASE \n        WHEN oc.total_orders = 0 THEN NULL\n        ELSE sc.total_samples / oc.total_orders\n    END AS racio\nFROM \n    sample_counts sc\nLEFT JOIN \n    order_counts oc ON sc.PartnerID = oc.PartnerID\n    Order by total_samples DESC\nEND",
+        "query": "Select p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%' and cod.Versao not like '3%' and cod.Versao not like '4%'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand cod.CreationDateTime>=DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()) and cod.CreationDateTime<=DATEADD(day,7,DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()))\nand imdv.VersionName not like '%intertek%' and cod.Versao not like '3%' and cod.Versao not like '4%'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%' and cod.Versao not like '3%' and cod.Versao not like '4%'\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\nand cod.CreationDateTime>=DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()) and cod.CreationDateTime<=DATEADD(day,7,DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), GETDATE()))\nand imdv.VersionName not like '%intertek%' and cod.Versao not like '3%' and cod.Versao not like '4%'\nOrder by Total DESC\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE())-1 and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%' and cod.Versao not like '3%' and cod.Versao not like '4%'\ngroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\njoin ItemMasterDetailsVersion imdv on imdv.ItemId=cod.ItemID and imdv.Version=cod.Versao\nWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE())-1 and cod.ProductionStatus!='ANULADA'\nand imdv.VersionName not like '%intertek%' and cod.Versao not like '3%' and cod.Versao not like '4%'\nOrder by Total DESC\n\n\nSelect p.PartnerID, p.PartnerName,COUNT(*) Total\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\n        and cod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tgroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\n\nSelect p.PartnerID, p.PartnerName, SUM(QtyOrd) Total\n\tfrom ClientOrderDetails cod\n\tjoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tWhere cod.DocType='OP' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and\n    cod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0\n\tgroup by p.PartnerID, p.PartnerName\nOrder by Total DESC\n\n\nSelect COUNT(*) Total\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and \n\t\tcod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\nOrder by Total DESC\n\n\nSelect SUM(QtyOrd) Total\nfrom ClientOrderDetails cod\njoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\njoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\nWhere cod.DocType='OP' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and\ncod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0\nOrder by Total DESC\n\nBegin\n\nWITH sample_counts AS (\n    Select SUM(QtyOrd) total_samples\n\tfrom ClientOrderDetails cod\n\tjoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\n\tWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and cod.Versao not like '3%' and cod.Versao not like '4%'\n),\norder_counts AS (\n    Select COUNT(*) total_orders\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and \n\t\tcod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\n)\n-- Unindo as duas contagens\nSELECT \n    CASE \n        WHEN oc.total_orders = 0 THEN NULL\n        ELSE sc.total_samples / oc.total_orders\n    END AS racio\nFROM \n    sample_counts sc, order_counts oc\nEND\n\nBegin\nWITH sample_counts AS (\n    Select p.PartnerID, p.PartnerName, SUM(QtyOrd) total_samples\n\tfrom ClientOrderDetails cod\n\tjoin ClientOrders co on cod.DocType=co.DocType and cod.OrderID=co.OrderID\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tWhere cod.DocType='PA' and YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA' and cod.Versao not like '3%' and cod.Versao not like '4%'\n\tgroup by p.PartnerID, p.PartnerName\n),\norder_counts AS (\n    Select p.PartnerID, p.PartnerName,COUNT(*) total_orders\nfrom (Select Distinct ItemID, ClientID\n\t\tfrom ClientOrderDetails cod\n\t\tjoin ClientOrders co on co.DocType=cod.DocType and co.OrderID=cod.OrderID\n\t\tWhere cod.docType='OP' and  YEAR(cod.CreationDateTime)=YEAR(GETDATE()) and cod.ProductionStatus!='ANULADA'\n        and cod.OrderID like '99%' and cod.IDIntegration!='' and cod.IDIntegration is not null and cod.IDIntegration!='N/DEF' and cod.QtyOrd>0) co\n\tjoin BusinessPartners p on p.PartnerID=co.ClientID and p.PartnerType='C'\n\tgroup by p.PartnerID, p.PartnerName\n)\n-- Unindo as duas contagens\nSELECT\n\tsc.PartnerID,\n\tsc.PartnerName,\n    sc.total_samples amostras,\n    oc.total_orders encomendas,\n    CASE \n        WHEN oc.total_orders = 0 THEN NULL\n        ELSE sc.total_samples / oc.total_orders\n    END AS racio\nFROM \n    sample_counts sc\nLEFT JOIN \n    order_counts oc ON sc.PartnerID = oc.PartnerID\n    Order by total_samples DESC\nEND",
         "modeOpt": "queryMode",
         "modeOptType": "query",
         "queryOpt": "payload",
@@ -2438,20 +3032,6 @@
         "wires": []
     },
     {
-        "id": "f0c4a4eed058ea26",
-        "type": "e-mail",
-        "z": "4825264caacc700a",
-        "server": "mail.sooma.com",
-        "port": "465",
-        "secure": true,
-        "tls": true,
-        "name": "afonso.duarte@fsm.pt",
-        "dname": "",
-        "x": 1000,
-        "y": 420,
-        "wires": []
-    },
-    {
         "id": "1f4f953f3c258331",
         "type": "function",
         "z": "4825264caacc700a",
@@ -2466,12 +3046,11 @@
         "y": 180,
         "wires": [
             [
+                "1b773bee6c22c01b",
                 "e101cdd59d92eb6e",
                 "3378a93fb48a814c",
                 "036da7ecc0e30d66",
-                "051e3b61bdaec2b4",
-                "f0c4a4eed058ea26",
-                "1b773bee6c22c01b"
+                "051e3b61bdaec2b4"
             ]
         ]
     },
@@ -2570,7 +3149,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 820,
+        "x": 780,
         "y": 120,
         "wires": [
             [
@@ -2581,7 +3160,7 @@
                 "c264d34080bb3b11",
                 "9911df62b17ff5c3",
                 "79991a3a56935ef4",
-                "ae31ac4e66916739"
+                "5f53f47084cf117a"
             ]
         ]
     },
@@ -2729,6 +3308,105 @@
         "dname": "",
         "x": 1060,
         "y": 280,
+        "wires": []
+    },
+    {
+        "id": "5f53f47084cf117a",
+        "type": "e-mail",
+        "z": "d8b91f5aab19e75d",
+        "server": "mail.sooma.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "antonio.ferreira@fsm.pt",
+        "dname": "",
+        "x": 1070,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "2d8050246805454d",
+        "type": "function",
+        "z": "d8b91f5aab19e75d",
+        "name": "Create Template",
+        "func": "let euroGerman = Intl.NumberFormat('et-ET');\nvar values=msg.payload[1]\nvar valuesTotal=msg.payload[0][0]\nvar valuesNOTENC = msg.payload[4]\nvar valuesTotalNOTENC = msg.payload[3][0]\nvar html_aux = \"\"\nvar html_aux_1=\"\"\nhtml_aux = html_aux + \"<tr>\"\nhtml_aux = html_aux + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux = html_aux + \"<td>\" + valuesTotal.TotEncT + \"</td>\"\nhtml_aux = html_aux + \"<td>\" + valuesTotal.MonthCorT + \"</td>\"\nhtml_aux = html_aux + \"<td>\" + valuesTotal.MonthProT + \"</td>\"\nhtml_aux = html_aux + \"</tr>\"\n\nhtml_aux_1 = html_aux_1 + \"<tr>\"\nhtml_aux_1 = html_aux_1 + \"<td><h4>VALOR GLOBAL</h4></td>\"\nhtml_aux_1 = html_aux_1 + \"<td>\" + valuesTotalNOTENC.TotEncT + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"<td>\" + valuesTotalNOTENC.MonthCorT + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"<td>\" + valuesTotalNOTENC.MonthProT + \"</td>\"\nhtml_aux_1 = html_aux_1 + \"</tr>\"\n\nvalues.map(i=>{\n    html_aux=html_aux+\"<tr>\"\n    html_aux=html_aux+\"<td>\"+i.PartnerName+\"</td>\"\n    html_aux=html_aux+\"<td>\"+i.TotEncT+\"</td>\"\n    html_aux=html_aux+\"<td>\"+i.MonthCorT+\"</td>\"\n    html_aux=html_aux+\"<td>\"+i.MonthProT+\"</td>\"\n    html_aux=html_aux+\"</tr>\"\n})\n\nvaluesNOTENC.map(i => {\n  html_aux_1 = html_aux_1 + \"<tr>\"\n  html_aux_1 = html_aux_1 + \"<td>\" + i.PartnerName + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>\" + i.TotEncT + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>\" + i.MonthCorT + \"</td>\"\n  html_aux_1 = html_aux_1 + \"<td>\" + i.MonthProT + \"</td>\"\n  html_aux_1 = html_aux_1 + \"</tr>\"\n})\nvar html =\"<!DOCTYPE html>\"+\n\"<html>\"+\n\"<head>\"+\n\"<style>\"+\n\"table {\"+\n  \"font-family: arial, sans-serif;\"+\n  \"border-collapse: collapse;\"+\n  \"width: 100%;\"+\n\"}\"+\n\n\"td{\"+\n  \"border: 1px solid #dddddd;\"+\n  \"text-align: right;\"+\n  \"padding: 8px;\"+\n\"}\"+\n\"th{\"+\n \"border: 1px solid #dddddd;\"+\n  \"text-align: left;\"+\n  \"padding: 8px;\"+\n\"}\"+\n\"tr:nth-child(even) {\"+\n  \"background-color: #dddddd;\"+\n\"}\"+\n\"</style>\"+\n\"</head>\"+\n\"<body>\"+\n\"<h4> Boa Noite.</h4>\"+\n\"<div></div>\"+\n\"<h4> Segue abaixo as Encomendas em Carteira por Cliente</h4><br>\"+\n\"<br><h4>ENCOMENDAS CONFIRMADAS</h4>\"+\n\"<div></div>\"+\n\"<div></div>\"+\n\"<table>\"+\n\"<tr>\"+\n    \"<th>Cliente</th>\"+\n    \"<th>Total em Carteira</th>\"+\n    \"<th>Total Mês Corrente</th>\"+\n    \"<th>Total Próximo Mês</th>\"+\n\"</tr>\"\nhtml=html+html_aux\nhtml = html +\"</table><br> <h4>ENCOMENDAS SEM CONFIRMAÇÃO</h4>\"\nhtml = html + \"<table>\" +\n  \"<tr>\" +\n  \"<th>Cliente</th>\" +\n  \"<th>Total em Carteira</th>\" +\n  \"<th>Total Mês Corrente</th>\" +\n  \"<th>Total Próximo Mês</th>\" +\n  \"</tr>\"\nhtml=html+html_aux_1\nhtml=html+\"</table></body> </html>\"\n\nmsg.payload=html\nmsg.plaintext='text:html'\nmsg.topic='Encomendas em Carteira FSM'\nmsg.from='ricardo.ferreira@fsm.pt'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9d43ae874197c095",
+        "type": "inject",
+        "z": "073150d57069898e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 100,
+        "wires": [
+            [
+                "122caf13d1f82b59"
+            ]
+        ]
+    },
+    {
+        "id": "122caf13d1f82b59",
+        "type": "http request",
+        "z": "073150d57069898e",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://90.0.0.31:5000/api/InvoiceSAP/MergeInvoices",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 330,
+        "y": 100,
+        "wires": [
+            [
+                "ca8eab06685ce111"
+            ]
+        ]
+    },
+    {
+        "id": "ca8eab06685ce111",
+        "type": "debug",
+        "z": "073150d57069898e",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 100,
         "wires": []
     }
 ]
